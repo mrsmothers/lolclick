@@ -2,14 +2,14 @@ userName := "mr5mother5"
 userPassword := "mund05m85h"
 
 ^5::
-   login(userName, UserPassword)
+   login(userName, userPassword)
 Return
 
 login(name, password){
    if(!WinExist("<!ahk_class name lol client>")){
       if(!WinExist("<!ahk_class lolpatcher>")){
          Run, "<!location of lol client>"
-         while(!WinExist("<!ahk_class lolpatcher>")
+         while(!WinExist("<!ahk_class lolpatcher>"){
             if(winExist("<!rads error msg>")){
                WinAcitivte, <!rads error msg>
                Send, {ENTER}
@@ -36,7 +36,7 @@ classicSoloQueLockIn(GameType, champion){
       
 }
 
-draftQueLockIn(gameType, primaryPosition, secondaryPosition, waitForMatchMaking, bans, champions)
+draftQueLockIn(gameType, primaryPosition, secondaryPosition, waitForMatchMaking, bans, champions){
    if(!clientOn())
       return
       
@@ -54,7 +54,7 @@ draftQueLockIn(gameType, primaryPosition, secondaryPosition, waitForMatchMaking,
          Sleep, 500
    }
    else{
-      while(!imageMatch())
+      while(!imageMatch("<!Queue Up Button>"))
          Sleep, 500
       Click x,y
       while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())
@@ -85,6 +85,10 @@ draft_acceptMatchButtonAvaliable(){
 }
 
 startDraftNormalQue(){
+ ;prototype
+}
+
+startDraftRankedQue(){
  ;prototype
 }
 
