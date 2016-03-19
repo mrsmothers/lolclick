@@ -22,10 +22,11 @@ Return
    draftQueLockIn("Normal", positions, champions, bans, false)
 Return
 
+
 login(name, password){
    if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
-         Run, "<!location of lol client>"
+         Run, "C:\Riot Games\League of Legends\lol.launcher.exe"
          while(!WinExist("ahk_class LOLPATCHER")){
             if(winExist("ahk_class #32770")){
                WinActivate, ahk_class #32770
@@ -36,9 +37,9 @@ login(name, password){
          } 
       }
       WinActivate, ahk_class LOLPATCHER
-      while(pixleDistance(599, 21, 0x1070C0) > .1 ) ;todo:OR imageMatch(<! >)
+      while(pixleDistance(599, 21, 0x1070C0) > 40 ) ;todo:OR imageMatch(<! >)
          sleep, 500
-      Click x,y
+      Click 599, 21
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 8500
     }
