@@ -26,9 +26,9 @@ login(name, password){
    if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
          Run, "<!location of lol client>"
-         while(!WinExist("ahk_class LOLPATCHER"){
+         while(!WinExist("ahk_class LOLPATCHER")){
             if(winExist("ahk_class #32770")){
-               WinAcitivte, ahk_class #32770
+               WinActivate, ahk_class #32770
                Send, {ENTER}
                Sleep, 100 
                break
