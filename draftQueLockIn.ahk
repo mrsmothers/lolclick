@@ -29,11 +29,24 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
 }
 
 draft_matchMakingQueHandle(champions, bans){
- ;prototype
+   if(draft_inMatchMaking()){
+      while(!draft_acceptButtonAvalible())
+         Sleep, 2000
+   }
+   click
+   ;wait for other players to accept
+   ;handle que reentry
+   ;call draft_championSelectHandle
 }
 
-draft_ChampianSelectHandle(champions, bans){
- ;prototype
+draft_champianSelectHandle(champions, bans){
+  position := draft_findPosition()
+  draft_selectChampion("intent", champions, position)
+  
+  while(draft_numberOfBans()<6){
+     if(draft_playerActive()){
+        draft_selectChampion("ban", bans
+  
 }
 
 draft_selectPositions(primary, secondary){
@@ -45,5 +58,9 @@ draft_inMatchMaking(){
 }
 
 draft_acceptMatchButtonAvaliable(){
+ ;prototype
+}
+
+draft_findPosition(){
  ;prototype
 }
