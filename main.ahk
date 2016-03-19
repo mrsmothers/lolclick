@@ -81,7 +81,7 @@ draft_matchMakingQueHandle(champions, bans){
  ;prototype
 }
 
-draft_ChampianSelectHandle(primaryPosition, secondaryPosition, bans, champions){
+draft_ChampianSelectHandle(champions, bans){
  ;prototype
 }
 
