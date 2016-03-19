@@ -1,3 +1,5 @@
+#Include lolbase.ahk
+
 draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
    if(!clientOn())
       return
