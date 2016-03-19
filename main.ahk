@@ -27,8 +27,8 @@ login(name, password){
       if(!WinExist("ahk_class LOLPATCHER")){
          Run, "<!location of lol client>"
          while(!WinExist("ahk_class LOLPATCHER"){
-            if(winExist("<!rads error msg>")){
-               WinAcitivte, <!rads error msg>
+            if(winExist("ahk_class #32770")){
+               WinAcitivte, ahk_class #32770
                Send, {ENTER}
                Sleep, 100 
                break
