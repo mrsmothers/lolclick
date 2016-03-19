@@ -21,6 +21,7 @@ champ2["summoners2"] := "flash"
 bans["mundo", "yas", "blitz"]
 
 draftQueLockIn("Normal", kog, champ2, false, bans)
+Return
 
 login(name, password){
    if(!WinExist("<!ahk_class name lol client>")){
