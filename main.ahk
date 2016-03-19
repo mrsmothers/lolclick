@@ -36,7 +36,7 @@ login(name, password){
          } 
       }
       WinActivate, ahk_class LOLPATCHER
-      while(pixleDistance(599, 21, 0x1070C0) > .1 OR imageMatch(<! >))
+      while(pixleDistance(599, 21, 0x1070C0) > .1 ) ;todo:OR imageMatch(<! >)
          sleep, 500
       Click x,y
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
