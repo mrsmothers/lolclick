@@ -5,6 +5,19 @@ userPassword := "mund05m85h"
    login(userName, userPassword)
 Return
 
+^t::
+kog := Object()
+kog["champion"]   := "kog"
+kog["position"]   := "adc"
+kog["summoners1"] := "heal"
+kog["summoners2"] := "flash"
+
+champ2 := Object()
+champ2["champion"]   := "lulu"
+champ2["position"]   := "support"
+champ2["summoners1"] := "exhust"
+champ2["summoners2"] := "flash"
+
 login(name, password){
    if(!WinExist("<!ahk_class name lol client>")){
       if(!WinExist("<!ahk_class lolpatcher>")){
@@ -36,7 +49,7 @@ classicSoloQueLockIn(GameType, champion){
       
 }
 
-draftQueLockIn(gameType, primaryPosition, secondaryPosition, waitForMatchMaking, bans, champions){
+draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking, bans, champions){
    if(!clientOn())
       return
       
@@ -47,7 +60,7 @@ draftQueLockIn(gameType, primaryPosition, secondaryPosition, waitForMatchMaking,
    else 
       return
       
-   draft_selectPositions(primaryPosition, secondaryPossition)
+   draft_selectPositions(primaryChampion["position"], secondaryChampion["position"])
    
    if(waitForMatchMaking){
       while(!draft_inMatchMaking())
