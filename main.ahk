@@ -46,9 +46,3 @@ login(name, password){
   ;click x,y
   Send, %name%{TAB}%password%{ENTER}
 }
-
-classicSoloQueLockIn(GameType, champion){
-   if(!clientOn())
-      return
-      
-}
