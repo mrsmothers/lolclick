@@ -1,4 +1,6 @@
-#include draftQueLockIn.ahk
+#Include draftQueLockIn.ahk
+#Include classicQueLockIn.ahk
+#Include lolBase.ahk
 
 userName := "mr5mother5"
 userPassword := "mund05m85h"
@@ -49,24 +51,4 @@ classicSoloQueLockIn(GameType, champion){
    if(!clientOn())
       return
       
-}
-
-startDraftNormalQue(){
- ;prototype
-}
-
-startDraftRankedQue(){
- ;prototype
-}
-
-Champion(name, position, summoners1, summoners2){
-   return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
-}
-
-pixleDistance(x,y, color){
- ;prototype
-}
-
-imageMatch(x, y, imgSrc){
- ;prototype
 }
