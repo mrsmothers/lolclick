@@ -23,7 +23,7 @@ Return
 Return
 
 login(name, password){
-   if(!WinExist("<!ahk_class name lol client>")){
+   if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
          Run, "<!location of lol client>"
          while(!WinExist("ahk_class LOLPATCHER"){
@@ -39,10 +39,10 @@ login(name, password){
       while(pixleDistance(599, 21, 0x1070C0) > .1 OR imageMatch(<! >))
          sleep, 500
       Click x,y
-      WinWaitActive, <!ahk_class name lol client>
+      WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 8500
     }
-  WinActivate, <!ahk_class name lol client>
+  WinActivate, ahk_class ApolloRuntimeContentWindow
   ;click x,y
   Send, %name%{TAB}%password%{ENTER}
 }
