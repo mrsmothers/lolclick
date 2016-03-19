@@ -45,11 +45,3 @@ draft_inMatchMaking(){
 draft_acceptMatchButtonAvaliable(){
  ;prototype
 }
-
-startDraftNormalQue(){
- ;prototype
-}
-
-startDraftRankedQue(){
- ;prototype
-}
