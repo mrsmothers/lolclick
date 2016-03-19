@@ -17,6 +17,10 @@ champ2["champion"]   := "lulu"
 champ2["position"]   := "support"
 champ2["summoners1"] := "exhust"
 champ2["summoners2"] := "flash"
+ 
+bans["mundo", "yas", "blitz"]
+
+draftQueLockIn("Normal", kog, champ2, false, bans)
 
 login(name, password){
    if(!WinExist("<!ahk_class name lol client>")){
@@ -49,14 +53,14 @@ classicSoloQueLockIn(GameType, champion){
       
 }
 
-draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking, bans, champions){
+draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking, bans){
    if(!clientOn())
       return
       
    if(gameType="Ranked")
-      startDraftRankedSolo()
+      startDraftRanked()
    else if(gameType="Normal")
-      startDraftNormalSolo()
+      startDraftNormal()
    else 
       return
       
