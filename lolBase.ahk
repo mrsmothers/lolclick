@@ -34,8 +34,9 @@ Champion(name, position, summoners1, summoners2){
    return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
 }
 
-pixleDistance(x,y, color){
+pixleDistance(x,y, c1){
  ; function by [VxE], return value range = [0, 441.67295593006372]
+  pixelGetColor, c2, x, y 
    r1 := c1 >> 16
    g1 := c1 >> 8 & 255
    b1 := c1 & 255
