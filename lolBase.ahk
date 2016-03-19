@@ -1,3 +1,27 @@
+clientOn(){
+ ;prototype
+}
+
+clientInFocuse(){
+ ;prototype
+}
+
+clickHomeButton(){
+ ;prototype
+}
+
+clickPlayButton(){
+ ;prototype
+}
+
+homeButtonAvalible(){
+ ;prtotype
+}
+
+playButtonAvalible(){
+ ;prototype
+}
+
 startDraftNormalQue(){
  ;prototype
 }
