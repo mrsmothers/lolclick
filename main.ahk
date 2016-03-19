@@ -6,28 +6,23 @@ userPassword := "mund05m85h"
 Return
 
 ^t::
-kog := Object()
-kog["champion"]   := "kog"
-kog["position"]   := "adc"
-kog["summoners1"] := "heal"
-kog["summoners2"] := "flash"
-
-champ2 := Object()
-champ2["champion"]   := "lulu"
-champ2["position"]   := "support"
-champ2["summoners1"] := "exhust"
-champ2["summoners2"] := "flash"
- 
-bans["mundo", "yas", "blitz"]
-
-draftQueLockIn("Normal", kog, champ2, false, bans)
+   kog := Champion("kog","adc","heal","flash")
+   jinx := Champion("jinx", "adc", "heal", "flash")
+   champ2 := Champion("lulu","support","exhaust","flash")
+   leona = Champion("leona", "support", "egnight", "flash")
+   
+   positions := ["adc", "support"]
+   champions := [kog, jinx, champ2, leona]
+   bans      := ["mundo", "yas", "blitz"]
+   
+   draftQueLockIn("Normal", positions, champions, bans, false)
 Return
 
 login(name, password){
    if(!WinExist("<!ahk_class name lol client>")){
-      if(!WinExist("<!ahk_class lolpatcher>")){
+      if(!WinExist("ahk_class LOLPATCHER")){
          Run, "<!location of lol client>"
-         while(!WinExist("<!ahk_class lolpatcher>"){
+         while(!WinExist("ahk_class LOLPATCHER"){
             if(winExist("<!rads error msg>")){
                WinAcitivte, <!rads error msg>
                Send, {ENTER}
@@ -36,8 +31,8 @@ login(name, password){
             }
          } 
       }
-      WinActivate, <!ahk_class lolpatcher>
-      while(!imageMatch(<!image of button>))
+      WinActivate, ahk_class LOLPATCHER
+      while(pixleDistance(599, 21, 0x1070C0) > .1 OR imageMatch(<! >))
          sleep, 500
       Click x,y
       WinWaitActive, <!ahk_class name lol client>
@@ -54,7 +49,7 @@ classicSoloQueLockIn(GameType, champion){
       
 }
 
-draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking, bans){
+draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
    if(!clientOn())
       return
       
@@ -65,7 +60,7 @@ draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking,
    else 
       return
       
-   draft_selectPositions(primaryChampion["position"], secondaryChampion["position"])
+   draft_selectPositions(position[1], position[2])
    
    if(waitForMatchMaking){
       while(!draft_inMatchMaking())
@@ -79,10 +74,10 @@ draftQueLockIn(gameType, primaryChampion, secondaryChampion, waitForMatchMaking,
          Sleep, 100
    }
    
-   draft_matchMakingQueHandle(primaryPosition, secondaryPosition, bans, champions)
+   draft_matchMakingQueHandle(champions, bans)
 }
 
-draft_matchMakingQueHandle(primaryPosition, secondaryPosition, bans, champions){
+draft_matchMakingQueHandle(champions, bans){
  ;prototype
 }
 
@@ -107,6 +102,14 @@ startDraftNormalQue(){
 }
 
 startDraftRankedQue(){
+ ;prototype
+}
+
+Champion(name, position, summoners1, summoners2){
+   return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
+}
+
+pixleDistance(x,y, color){
  ;prototype
 }
 
