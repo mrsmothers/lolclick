@@ -31,10 +31,10 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
 draft_matchMakingQueHandle(champions, bans){
    loop {
       if(draft_inMatchMaking()){
-         while(!draft_acceptButtonAvalible())
+         while(!draft_acceptMatchButtonAvalible())
             Sleep, 2000
       }
-      if(draft_acceptButtonAvalible())
+      if(draft_acceptMatchButtonAvalible())
          click
       ;todo:wait for other players to accept
       while(!draft_inMatchMaking() AND !draft_enteringChampionSelect())
@@ -49,6 +49,8 @@ draft_champianSelectionHandle(champions, bans){
    draft_selectChampion("intent", champions, position)
    
    while(draft_numberOfBans()<6){
+      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
+         return draft_matchMakingQueHandle()
       if(draft_playerActive()){
          draft_selectChampion("ban", bans)
       }
@@ -58,10 +60,6 @@ draft_champianSelectionHandle(champions, bans){
    while(TRUE){
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
-}
-
-draft_selectPositions(primary, secondary(){
- ;prototype
 }
 
 draft_inMatchMaking(){
@@ -79,6 +77,31 @@ draft_enteringChampionSelect(){
 draft_numberOfBans(){
  ;prototype
 }
+
+draft_playerActive(){
+   loop, 5 {
+      if(pixleDistance(9, n+p*A_Index, 0x______)
+         return true
+   }
+   return false
+}
+
 draft_findPosition(){
+   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible()){
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "position"
+   }
+   return "draft_findPosition() Error"
+}
+
+draft_enteringChampionSelect(){
+ ;prtotype
+}
+
+draft_selectChampion(gamePhase, champions, position :=""){
+ ;prototype
+}
+
+draft_selectPositions(primary, secondary(){
  ;prototype
 }
