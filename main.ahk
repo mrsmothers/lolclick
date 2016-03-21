@@ -2,7 +2,7 @@
 #Include classicQueLockIn.ahk
 #Include lolBase.ahk
 
-userName := "mr5mother5"
+userName := ""
 userPassword := ""
 
 ^5::
