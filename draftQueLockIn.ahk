@@ -46,20 +46,25 @@ draft_matchMakingQueHandle(champions, bans){
 
 draft_champianSelectionHandle(champions, bans){
    position := draft_findPosition()
+   Sleep, 2000 ;look at this sleep its so seksie
    draft_selectChampion("intent", champions, position)
    
    while(draft_numberOfBans()<6){
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle()
-      if(draft_playerActive()){
+      if(draft_playerActive())
          draft_selectChampion("ban", bans)
-      }
+      
       Sleep, 1000
    }
    
    while(TRUE){
+      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
+         return draft_matchMakingQueHandle()   
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
+      Sleep, 1000
+   }
 }
 
 draft_inMatchMaking(){
@@ -117,5 +122,44 @@ draft_selectChampion(gamePhase, champions, position :=""){
 }
 
 draft_selectPositions(primary, secondary(){
- ;prototype
+   click
+   if(primary="fill"){
+      click ;;phill
+      return
+   }
+   if(primary="top"){
+      click
+   }
+   if(primary="mid"){
+      click
+   }
+   if(primary="jung" OR primary="jungle"){
+      click
+   }
+   if(primary="supp" OR primary="support"){
+      click
+   }
+   if(primary="bot" OR primary="adc"){
+      click
+   }
+   
+   Click
+   if(secondary="fill"){
+      Click ;;phill
+   }
+   if(secondary="top"){
+      Click
+   }
+   if(secondary="mid"){
+      Click
+   }
+   if(secondary="jung" OR secondary="jungle"){
+      Click
+   }
+   if(secondary="supp" OR secondary="support"){
+      Click
+   }
+   if(secondary="bot" OR secondary="adc"){
+      Click
+   }
 }
