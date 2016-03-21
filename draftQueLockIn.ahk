@@ -25,28 +25,39 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
          Sleep, 100
    }
    
-   draft_matchMakingQueHandle(champions, bans)
+   return draft_matchMakingQueHandle(champions, bans)
 }
 
 draft_matchMakingQueHandle(champions, bans){
-   if(draft_inMatchMaking()){
-      while(!draft_acceptButtonAvalible())
-         Sleep, 2000
+   loop {
+      if(draft_inMatchMaking()){
+         while(!draft_acceptButtonAvalible())
+            Sleep, 2000
+      }
+      if(draft_acceptButtonAvalible())
+         click
+      ;todo:wait for other players to accept
+      while(!draft_inMatchMaking() AND !draft_enteringChampionSelect())
+         Sleep, 200
+      if(draft_enteringChampionSelect())
+         return draft_champianSelectionHandle(champions, bans)
    }
-   click
-   ;wait for other players to accept
-   ;handle que reentry
-   ;call draft_championSelectHandle
 }
 
-draft_champianSelectHandle(champions, bans){
-  position := draft_findPosition()
-  draft_selectChampion("intent", champions, position)
-  
-  while(draft_numberOfBans()<6){
-     if(draft_playerActive()){
-        draft_selectChampion("ban", bans
-  
+draft_champianSelectionHandle(champions, bans){
+   position := draft_findPosition()
+   draft_selectChampion("intent", champions, position)
+   
+   while(draft_numberOfBans()<6){
+      if(draft_playerActive()){
+         draft_selectChampion("ban", bans)
+      }
+      Sleep, 1000
+   }
+   
+   while(TRUE){
+      if(draft_playerActive())
+         draft_selectChampion("championSelection", champions, position)
 }
 
 draft_selectPositions(primary, secondary(){
@@ -61,6 +72,13 @@ draft_acceptMatchButtonAvaliable(){
  ;prototype
 }
 
+draft_enteringChampionSelect(){
+ ;prototype
+}
+
+draft_numberOfBans(){
+ ;prototype
+}
 draft_findPosition(){
  ;prototype
 }
