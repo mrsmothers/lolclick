@@ -49,7 +49,7 @@ draft_champianSelectHandle(champions, bans){
   
 }
 
-draft_selectPositions(primary, secondary){
+draft_selectPositions(primary, secondary(){
  ;prototype
 }
 
