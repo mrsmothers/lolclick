@@ -3,10 +3,12 @@
 #Include lolBase.ahk
 
 userName := "mr5mother5"
-userPassword := "mund05m85h"
+userPassword := ""
 
 ^5::
-   login(userName, userPassword)
+   InputBox, pass, Password,,HIDE
+   login(userName, pass)
+
 Return
 
 ^t::
