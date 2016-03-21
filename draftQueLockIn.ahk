@@ -75,12 +75,22 @@ draft_enteringChampionSelect(){
 }
 
 draft_numberOfBans(){
- ;prototype
+   bans := 0
+   
+   loop, 3{
+      if(pixleDistance(x1, n1+p*A_Index, 0x______) < 40)
+         bans++
+      if(pixleDistance(x2, n2+p*A_Index, 0x______) < 40)
+         bans++
+   }
+   
+   return bans
 }
 
+ ;todo:finish logic
 draft_playerActive(){
    loop, 5 {
-      if(pixleDistance(9, n+p*A_Index, 0x______)
+      if(pixleDistance(9, n+p*A_Index, 0x______) < 40)
          return true
    }
    return false
@@ -94,12 +104,16 @@ draft_findPosition(){
    return "draft_findPosition() Error"
 }
 
-draft_enteringChampionSelect(){
- ;prtotype
-}
-
 draft_selectChampion(gamePhase, champions, position :=""){
- ;prototype
+   if(gamePhase="intent"){
+   
+   }
+   else if(gamePhase="ban"){
+   
+   }
+   else if (gamePhase="championSelection"){
+   
+   }
 }
 
 draft_selectPositions(primary, secondary(){
