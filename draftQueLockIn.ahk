@@ -119,7 +119,22 @@ draft_findPosition(){
 
 draft_selectChampion(gamePhase, champions, position :=""){
    if(gamePhase="intent"){
-   
+      for champ in champions {
+         if(champ["position"] != position OR  champ["position"] != "fill")
+            continue
+            
+         MouseMove xy             ;;click search bar and enter intent
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click
+         Send %champ["name"]%
+         
+         MouseMove xy             ;;click champion icon
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click            
    }
    else if(gamePhase="ban"){
       for ban, value in champions {
@@ -145,10 +160,33 @@ draft_selectChampion(gamePhase, champions, position :=""){
          if(!draft_playActive())       ;ban complete
             return
       }
-      
    }
    else if (gamePhase="championSelection"){
-   
+      for champ in champions {
+         if(champ["position"] != position OR  champ["position"] != "fill")
+            continue
+         MouseMove xy             ;;click search bar and enter champion
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click
+         Send %champ["name"]%
+         
+         MouseMove xy             ;;click champion icon
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click         
+         
+         MouseMove xy             ;;click button
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click             
+         
+         if(!draft_playActive())       ;champion select complete
+            return
+      }   
    }
 }
 
