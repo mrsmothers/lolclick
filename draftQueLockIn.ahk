@@ -139,6 +139,7 @@ draft_selectChampion(gamePhase, champions, position :=""){
          if(!clientInFocuse())
             return
          click   
+         return
       }
    }
    else if(gamePhase="ban"){
