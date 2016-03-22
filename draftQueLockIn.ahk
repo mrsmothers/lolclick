@@ -52,6 +52,8 @@ draft_championSelectionHandle(champions, bans){
    while(draft_numberOfBans()<6){
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle()
+      if(!clientInFocuse())
+        waitForClientFocuse()         
       if(draft_playerActive())
          draft_selectChampion("ban", bans)
       
@@ -61,6 +63,8 @@ draft_championSelectionHandle(champions, bans){
    while(TRUE){
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle()   
+      if(!clientInFocuse())
+        waitForClientFocuse()
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
       Sleep, 1000
