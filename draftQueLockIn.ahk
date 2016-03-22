@@ -102,9 +102,17 @@ draft_playerActive(){
 }
 
 draft_findPosition(){
-   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible()){
+   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
       if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "position"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "position"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "position"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "position"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "position"         
    }
    return "draft_findPosition() Error"
 }
