@@ -122,7 +122,30 @@ draft_selectChampion(gamePhase, champions, position :=""){
    
    }
    else if(gamePhase="ban"){
-   
+      for ban, value in champions {
+         MouseMove xy             ;;click search bar and enter ban
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click
+         Send %ban%
+         
+         MouseMove xy             ;;click champion icon
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click         
+         
+         MouseMove xy             ;;click ban button
+         Sleep, 500
+         if(!clientInFocuse())
+            return
+         click             
+         
+         if(!draft_playActive())       ;ban complete
+            return
+      }
+      
    }
    else if (gamePhase="championSelection"){
    
