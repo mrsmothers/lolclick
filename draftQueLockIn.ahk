@@ -40,11 +40,11 @@ draft_matchMakingQueHandle(champions, bans){
       while(!draft_inMatchMaking() AND !draft_enteringChampionSelect())
          Sleep, 200
       if(draft_enteringChampionSelect())
-         return draft_champianSelectionHandle(champions, bans)
+         return draft_championSelectionHandle(champions, bans)
    }
 }
 
-draft_champianSelectionHandle(champions, bans){
+draft_championSelectionHandle(champions, bans){
    position := draft_findPosition()
    Sleep, 2000 ;look at this sleep its so seksie
    draft_selectChampion("intent", champions, position)
@@ -134,7 +134,8 @@ draft_selectChampion(gamePhase, champions, position :=""){
          Sleep, 500
          if(!clientInFocuse())
             return
-         click            
+         click   
+      }
    }
    else if(gamePhase="ban"){
       for ban, value in champions {
