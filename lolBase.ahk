@@ -38,6 +38,21 @@ waitForClientFocuse(){
  ;prototype
 } 
 
+lolclick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime=""){
+   Random, x, x1, x2
+   Random, y, y1, y2
+   MouseMove x, y   
+   
+   if(maxTime=0)
+      slpTime:=minTime
+   else
+      Random, slpTime, min         
+   Sleep, slpTime
+   if(!clientInFocuse())
+      return false
+   click numClicks
+}
+
 pixleDistance(x,y, c1){
  ; function by [VxE], return value range = [0, 441.67295593006372]
   pixelGetColor, c2, x, y 
