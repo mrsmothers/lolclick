@@ -60,11 +60,11 @@ lolclick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0){
    if(maxTime=0)
       slpTime:=minTime
    else
-      Random, slpTime, min         
+      Random, slpTime, minTime, maxTime         
    Sleep, slpTime
-   if(!clientInFocuse())
+   IFWinNotActive ahk_class ApolloRuntimeContentWindow
       return false
-   click numClicks
+   click %numClicks%
 }
 
 pixleDistance(x,y, c1){
