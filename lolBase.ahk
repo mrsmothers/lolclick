@@ -8,10 +8,10 @@ clientOn(){
 }
 
 clientInFocuse(){
- IfWinActive ahk_class ApolloRuntimeContentWindow
-    return true
- else 
-    return false
+   IfWinActive ahk_class ApolloRuntimeContentWindow
+      return true
+   else 
+      return false
 }
 
 waitForClientFocuse(){
