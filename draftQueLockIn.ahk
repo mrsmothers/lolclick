@@ -1,27 +1,34 @@
 #Include lolbase.ahk
 
-draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
+draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
       
-   if(gameType="Ranked")
-      startDraftRanked()
-   else if(gameType="Normal")
-      startDraftNormal()
-   else 
-      return
+   if(!homeButtonAvalible())
+      return draft_matchMakingQueHandle()
       
-   draft_selectPositions(position[1], position[2])
+   if(!draft_inTeamArrange()){
+      if(gameType="Ranked")
+         startDraftRanked()
+      else if(gameType="Normal")
+         startDraftNormal()
+      else 
+         return
    
+      draft_selectPositions(position[1], position[2])
+   }
+   else 
+      waitForMatchMaking := true
+         
    if(waitForMatchMaking){
-      while(!draft_inMatchMaking())
+      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())
          Sleep, 500
    }
    else{
-      while(!imageMatch("<!Queue Up Button>"))
+      while(pxlDistance(x, y, 0xORANGE)< 40 )                        ;Queue Up Button
          Sleep, 500
       Click x,y
-      while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())
+      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())
          Sleep, 100
    }
    
@@ -31,29 +38,29 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking){
 draft_matchMakingQueHandle(champions, bans){
    loop {
       if(draft_inMatchMaking()){
-         while(!draft_acceptMatchButtonAvalible())
+         while(!draft_acceptMatchButtonAvalible()){
             Sleep, 2000
+            WinWaitAcive ahk_class ApolloRuntimeContentWindow 
       }
       if(draft_acceptMatchButtonAvalible())
          click
       ;todo:wait for other players to accept
-      while(!draft_inMatchMaking() AND !draft_enteringChampionSelect())
+      while(!draft_inMatchMaking()){
+         if(draft_inChampionSelect())
+            return draft_championSelectionHandle(champions, bans)      
          Sleep, 200
-      if(draft_enteringChampionSelect())
-         return draft_championSelectionHandle(champions, bans)
+      }
    }
 }
 
 draft_championSelectionHandle(champions, bans){
    position := draft_findPosition()
-   Sleep, 2000 ;look at this sleep its so seksie
    draft_selectChampion("intent", champions, position)
    
    while(draft_numberOfBans()<6){
+      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle()
-      if(!clientInFocuse())
-        waitForClientFocuse()         
       if(draft_playerActive())
          draft_selectChampion("ban", bans)
       
@@ -61,10 +68,9 @@ draft_championSelectionHandle(champions, bans){
    }
    
    while(TRUE){
+      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle()   
-      if(!clientInFocuse())
-        waitForClientFocuse()
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
       Sleep, 1000
@@ -107,16 +113,26 @@ draft_playerActive(){
 
 draft_findPosition(){
    while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
-      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+         Sleep, 2000
          return "position"
-      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+      }
+      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+         Sleep, 2000
          return "position"
-      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+      }
+      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+         Sleep, 2000
          return "position"
-      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+      }
+      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+         Sleep, 2000
          return "position"
-      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
-         return "position"         
+      }
+      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+         Sleep, 2000
+         return "position"
+      }       
    }
    return "draft_findPosition() Error"
 }
