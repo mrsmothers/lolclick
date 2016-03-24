@@ -127,42 +127,18 @@ draft_selectChampion(gamePhase, champions, position :=""){
          if(champ["position"] != position OR  champ["position"] != "fill")
             continue
             
-         MouseMove xy             ;;click search bar and enter intent
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter intent
          Send %champ["name"]%
-         
-         MouseMove xy             ;;click champion icon
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click   
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
          return
       }
    }
    else if(gamePhase="ban"){
       for ban, value in champions {
-         MouseMove xy             ;;click search bar and enter ban
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter ban
          Send %ban%
-         
-         MouseMove xy             ;;click champion icon
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click         
-         
-         MouseMove xy             ;;click ban button
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click             
-         
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click ban button
          if(!draft_playActive())       ;ban complete
             return
       }
@@ -171,25 +147,10 @@ draft_selectChampion(gamePhase, champions, position :=""){
       for champ in champions {
          if(champ["position"] != position OR  champ["position"] != "fill")
             continue
-         MouseMove xy             ;;click search bar and enter champion
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter champion
          Send %champ["name"]%
-         
-         MouseMove xy             ;;click champion icon
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click         
-         
-         MouseMove xy             ;;click button
-         Sleep, 500
-         if(!clientInFocuse())
-            return
-         click             
-         
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click button
          if(!draft_playActive())       ;champion select complete
             return
       }   
@@ -208,13 +169,13 @@ draft_selectPositions(primary, secondary(){
    if(primary="mid"){
       click
    }
-   if(primary="jung" OR primary="jungle"){
+   if(primary="jungle"){
       click
    }
-   if(primary="supp" OR primary="support"){
+   if(primary="support"){
       click
    }
-   if(primary="bot" OR primary="adc"){
+   if(primary="bot"){
       click
    }
    
@@ -228,13 +189,13 @@ draft_selectPositions(primary, secondary(){
    if(secondary="mid"){
       Click
    }
-   if(secondary="jung" OR secondary="jungle"){
+   if(secondary="jungle"){
       Click
    }
-   if(secondary="supp" OR secondary="support"){
+   if(secondary="support"){
       Click
    }
-   if(secondary="bot" OR secondary="adc"){
+   if(secondary="bot"){
       Click
    }
 }
