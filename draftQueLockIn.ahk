@@ -4,7 +4,7 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
       
-   if(!homeButtonAvalible())
+   if(!homeButtonAvalible() OR draft_inMatchMaking() OR draft_acceptButtonAvalible())
       return draft_matchMakingQueHandle()
       
    if(!draft_inTeamArrange()){
@@ -37,13 +37,14 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
 
 draft_matchMakingQueHandle(champions, bans){
    loop {
-      if(draft_inMatchMaking()){
+      if(draft_inMatchMaking())
          while(!draft_acceptMatchButtonAvalible()){
             Sleep, 2000
             WinWaitAcive ahk_class ApolloRuntimeContentWindow 
-      }
+         }
+         
       if(draft_acceptMatchButtonAvalible())
-         click
+         Click
       ;todo:wait for other players to accept
       while(!draft_inMatchMaking()){
          if(draft_inChampionSelect())
