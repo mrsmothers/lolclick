@@ -1,10 +1,22 @@
 clientOn(){
- ;prototype
+  if WinExist ahk_class ApolloRuntimeContentWindow {
+     WinActivate ahk_class ApolloRuntimeContentWindow
+     return true
+  }
+  else
+     false
 }
 
 clientInFocuse(){
- ;prototype
+ IfWinActive ahk_class ApolloRuntimeContentWindow
+    return true
+ else 
+    return false
 }
+
+waitForClientFocuse(){
+ WinWait ahk_class ApolloRuntimeContentWindow
+} 
 
 clickHomeButton(){
  ;prototype
@@ -34,11 +46,7 @@ Champion(name, position, summoners1, summoners2){
    return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
 }
 
-waitForClientFocuse(){
- ;prototype
-} 
-
-lolclick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime=""){
+lolclick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0){
    Random, x, x1, x2
    Random, y, y1, y2
    MouseMove x, y   
