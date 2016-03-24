@@ -54,8 +54,10 @@ draft_matchMakingQueHandle(champions, bans){
 }
 
 draft_championSelectionHandle(champions, bans){
-   position := draft_findPosition()
-   draft_selectChampion("intent", champions, position)
+   if(draft_enteringChampionSelect()){
+      position := draft_findPosition()
+      draft_selectChampion("intent", champions, position)
+   }
    
    while(draft_numberOfBans()<6){
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
@@ -73,8 +75,13 @@ draft_championSelectionHandle(champions, bans){
          return draft_matchMakingQueHandle()   
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
+      ;;todo: determen when game starts loading   
       Sleep, 1000
    }
+}
+
+draft_inTeamArrange(){
+ ;prototype
 }
 
 draft_inMatchMaking(){
@@ -87,6 +94,53 @@ draft_acceptMatchButtonAvaliable(){
 
 draft_enteringChampionSelect(){
  ;prototype
+}
+
+draft_inChampionSelect(){
+ ;prototype
+}
+
+draft_selectPositions(primary, secondary(){
+   click
+   if(primary="fill"){
+      click ;;phill
+      return
+   }
+   if(primary="top"){
+      click
+   }
+   if(primary="mid"){
+      click
+   }
+   if(primary="jungle"){
+      click
+   }
+   if(primary="support"){
+      click
+   }
+   if(primary="bot"){
+      click
+   }
+   
+   Click
+   if(secondary="fill"){
+      Click ;;phill
+   }
+   if(secondary="top"){
+      Click
+   }
+   if(secondary="mid"){
+      Click
+   }
+   if(secondary="jungle"){
+      Click
+   }
+   if(secondary="support"){
+      Click
+   }
+   if(secondary="bot"){
+      Click
+   }
 }
 
 draft_numberOfBans(){
@@ -102,7 +156,6 @@ draft_numberOfBans(){
    return bans
 }
 
- ;todo:finish logic
 draft_playerActive(){
    loop, 5 {
       if(pixleDistance(9, n+p*A_Index, 0x______) < 40)
@@ -171,48 +224,5 @@ draft_selectChampion(gamePhase, champions, position :=""){
          if(!draft_playActive())       ;champion select complete
             return
       }   
-   }
-}
-
-draft_selectPositions(primary, secondary(){
-   click
-   if(primary="fill"){
-      click ;;phill
-      return
-   }
-   if(primary="top"){
-      click
-   }
-   if(primary="mid"){
-      click
-   }
-   if(primary="jungle"){
-      click
-   }
-   if(primary="support"){
-      click
-   }
-   if(primary="bot"){
-      click
-   }
-   
-   Click
-   if(secondary="fill"){
-      Click ;;phill
-   }
-   if(secondary="top"){
-      Click
-   }
-   if(secondary="mid"){
-      Click
-   }
-   if(secondary="jungle"){
-      Click
-   }
-   if(secondary="support"){
-      Click
-   }
-   if(secondary="bot"){
-      Click
    }
 }
