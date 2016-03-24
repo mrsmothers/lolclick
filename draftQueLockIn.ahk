@@ -132,7 +132,8 @@ draft_findPosition(){
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
          Sleep, 2000
          return "position"
-      }       
+      }  
+      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
    }
    return "draft_findPosition() Error"
 }
