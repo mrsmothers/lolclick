@@ -1,5 +1,7 @@
 #Include lolbase.ahk
-
+ ;;todo:add summonners spell pick
+ ;;todo:create a champion configuer
+ ;;todo:detemin when the Que is finished
 draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
