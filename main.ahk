@@ -12,13 +12,14 @@ userPassword := ""
 Return
 
 ^t::
-   kog := Champion("kog","adc","heal","flash")
-   jinx := Champion("jinx", "adc", "heal", "flash")
-   champ2 := Champion("lulu","support","exhaust","flash")
-   leona = Champion("leona", "support", "egnight", "flash")
+   kog := Champion("kog","bot","heal","flash")
+   jinx := Champion("jinx", "bot", "heal", "flash")
+   champ2 := Champion("lulu","supp","exhaust","flash")
+   leona := Champion("leona", "supp", "egnight", "flash")
+   phill := Champion("kog", "fill", "heal", "flash")
    
-   positions := ["adc", "support"]
-   champions := [kog, jinx, champ2, leona]
+   positions := ["adc", "supp"]
+   champions := [kog, jinx, champ2, leona, phill]
    bans      := ["mundo", "yas", "blitz"]
    
    draftQueLockIn("Normal", positions, champions, bans, false)
