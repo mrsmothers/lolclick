@@ -14,10 +14,6 @@ clientInFocuse(){
       return false
 }
 
-waitForClientFocuse(){
- WinWait ahk_class ApolloRuntimeContentWindow
-} 
-
 clickHomeButton(){
  ;prototype
 }
@@ -43,12 +39,6 @@ startDraftRankedQue(){
 }
 
 Champion(name, position, summoners1, summoners2){
-   if(position = "supp")
-      position := "support"
-   if(position = "jung")
-      position := "jungle"
-   if(position = "adc")
-      position := "bot"
    return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
 }
 
