@@ -4,31 +4,37 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
       
-   if(!homeButtonAvalible() OR draft_inMatchMaking() OR draft_acceptButtonAvalible())
+   if(draft_inMatchMaking() OR draft_acceptButtonAvalible())
       return draft_matchMakingQueHandle()
+   if(!homeButtonAvalible())
+      return draft_championSelectionHandle()
       
-   if(!draft_inTeamArrange()){
+   if(playButtonAvalible()){
       if(gameType="Ranked")
          startDraftRanked()
       else if(gameType="Normal")
          startDraftNormal()
       else 
          return
-   
+
       draft_selectPositions(position[1], position[2])
    }
    else 
       waitForMatchMaking := true
          
    if(waitForMatchMaking){
-      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())
+      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible()){
          Sleep, 500
+         WinWaitActive ahk_class ApolloRuntimeContentWindow
+      }
    }
    else{
-      while(pxlDistance(x, y, 0xORANGE)< 40 )                        ;Queue Up Button
+      while(pxlDistance(x, y, 0xORANGE)< 40 ){                                     ;;Queue Up Button
          Sleep, 500
+         WinWaitActive ahk_class ApolloRuntimeContentWindow
+      }
       Click x,y
-      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())
+      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())              ;;could this be better
          Sleep, 100
    }
    
@@ -37,19 +43,21 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
 
 draft_matchMakingQueHandle(champions, bans){
    loop {
-      if(draft_inMatchMaking())
+      if(draft_inMatchMaking()){
          while(!draft_acceptMatchButtonAvalible()){
             Sleep, 2000
             WinWaitAcive ahk_class ApolloRuntimeContentWindow 
          }
-         
-      if(draft_acceptMatchButtonAvalible())
+      }
+      
+      if(draft_acceptMatchButtonAvalible()){
          Click
-      ;todo:wait for other players to accept
-      while(!draft_inMatchMaking()){
-         if(draft_inChampionSelect())
-            return draft_championSelectionHandle(champions, bans)      
-         Sleep, 200
+         ;todo:wait for other players to accept
+         while(!draft_inMatchMaking()){
+            if(draft_inChampionSelect())       ;; this could be better
+               return draft_championSelectionHandle(champions, bans)      
+            Sleep, 200
+         }
       }
    }
 }
