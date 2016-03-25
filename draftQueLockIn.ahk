@@ -87,10 +87,6 @@ draft_championSelectionHandle(champions, bans, positions){
    }
 }
 
-draft_inTeamArrange(){
- ;prototype
-}
-
 draft_inMatchMaking(){
  ;prototype
 }
