@@ -5,9 +5,9 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
       return
       
    if(draft_inMatchMaking() OR draft_acceptButtonAvalible())
-      return draft_matchMakingQueHandle()
+      return draft_matchMakingQueHandle(champions, bans, positions)
    if(!homeButtonAvalible())
-      return draft_championSelectionHandle()
+      return draft_championSelectionHandle(champions, bans, positions)
       
    if(playButtonAvalible()){
       if(gameType="Ranked")
@@ -36,10 +36,10 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
       Click x,y
    }
    
-   return draft_matchMakingQueHandle(champions, bans)
+   return draft_matchMakingQueHandle(champions, bans, positions)
 }
 
-draft_matchMakingQueHandle(champions, bans){
+draft_matchMakingQueHandle(champions, bans, positions){
    loop {
       if(draft_inMatchMaking()){
          while(!draft_acceptMatchButtonAvalible()){
@@ -51,24 +51,25 @@ draft_matchMakingQueHandle(champions, bans){
       if(draft_acceptMatchButtonAvalible()){
          Click
          ;todo:wait for other players to accept
-         while(!draft_inMatchMaking()){
-            if(draft_inChampionSelect())       ;; this could be better
-               return draft_championSelectionHandle(champions, bans)      
-            Sleep, 200
-         }
+         Sleep, 4000
+         return draft_championSelectionHandle(champions, bans, positions)    
       }
    }
 }
 
-draft_championSelectionHandle(champions, bans){
+draft_championSelectionHandle(champions, bans, positions){
    position := draft_findPosition()
-   if(position!="no position")
+   if(position="")
+      position := positions[1]
+   else{
+      Sleep, 4000
       draft_selectChampion("intent", champions, position)
+   }
    
    while(draft_numberOfBans()<6){
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
-         return draft_matchMakingQueHandle()
+         return draft_matchMakingQueHandle(champions, bans, positions)
       if(draft_playerActive())
          draft_selectChampion("ban", bans)
       
@@ -78,7 +79,7 @@ draft_championSelectionHandle(champions, bans){
    while(TRUE){
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
-         return draft_matchMakingQueHandle()   
+         return draft_matchMakingQueHandle(champions, bans, positions)   
       if(draft_playerActive())
          draft_selectChampion("championSelection", champions, position)
       ;;todo: determen when game starts loading   
@@ -95,14 +96,6 @@ draft_inMatchMaking(){
 }
 
 draft_acceptMatchButtonAvaliable(){
- ;prototype
-}
-
-draft_enteringChampionSelect(){
- ;prototype
-}
-
-draft_inChampionSelect(){
  ;prototype
 }
 
@@ -125,6 +118,7 @@ draft_selectPositions(primary, secondary(){
       click
    }
    if(primary="bot"){
+      
       click
    }
    
@@ -173,28 +167,23 @@ draft_playerActive(){
 draft_findPosition(){
    while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         Sleep, 2000
          return "position"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         Sleep, 2000
          return "position"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         Sleep, 2000
          return "position"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         Sleep, 2000
          return "position"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         Sleep, 2000
          return "position"
       }  
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
    }
-   return "no position"
+   return ""
 }
 
 draft_selectChampion(gamePhase, champions, position :=""){
