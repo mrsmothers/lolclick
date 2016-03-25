@@ -2,6 +2,7 @@
  ;;todo:add summonners spell pick
  ;;todo:create a champion configuer
  ;;todo:detemin when the Que is finished
+ ;;todo:install intelgent clickers to back up player enlu of auto-clickers
 draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
