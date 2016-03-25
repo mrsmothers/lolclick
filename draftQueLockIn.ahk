@@ -58,12 +58,12 @@ draft_matchMakingQueHandle(champions, bans, positions){
 }
 
 draft_championSelectionHandle(champions, bans, positions){
-   position := draft_findPosition()
+   position := draft_findPosition() ;;todo:tighten this up
    if(position="")
       position := positions[1]
    else{
       Sleep, 4000
-      draft_selectChampion("intent", champions, position)
+      draft_selectChampionIntent(champions, position)
    }
    
    while(draft_numberOfBans()<6){
@@ -71,7 +71,7 @@ draft_championSelectionHandle(champions, bans, positions){
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle(champions, bans, positions)
       if(draft_playerActive())
-         draft_selectChampion("ban", bans)
+         draft_banChampion(bans)
       
       Sleep, 1000
    }
@@ -81,7 +81,7 @@ draft_championSelectionHandle(champions, bans, positions){
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
          return draft_matchMakingQueHandle(champions, bans, positions)   
       if(draft_playerActive())
-         draft_selectChampion("championSelection", champions, position)
+         draft_selectChampion(champions, position)
       ;;todo: determen when game starts loading   
       Sleep, 1000
    }
@@ -95,6 +95,7 @@ draft_acceptMatchButtonAvaliable(){
  ;prototype
 }
 
+;;performs clicks nesisary to select the two positions befor Que
 draft_selectPositions(primary, secondary(){
    click
    if(primary="fill"){
@@ -107,10 +108,10 @@ draft_selectPositions(primary, secondary(){
    if(primary="mid"){
       click
    }
-   if(primary="jungle"){
+   if(primary="jung"){
       click
    }
-   if(primary="support"){
+   if(primary="supp"){
       click
    }
    if(primary="bot"){
@@ -128,17 +129,17 @@ draft_selectPositions(primary, secondary(){
    if(secondary="mid"){
       Click
    }
-   if(secondary="jungle"){
+   if(secondary="jung"){
       Click
    }
-   if(secondary="support"){
+   if(secondary="supp"){
       Click
    }
    if(secondary="bot"){
       Click
    }
 }
-
+;;iterate throught ban icons and count borders
 draft_numberOfBans(){
    bans := 0
    
@@ -151,7 +152,7 @@ draft_numberOfBans(){
    
    return bans
 }
-
+;;iterate through team roster looking for the active player icon
 draft_playerActive(){
    loop, 5 {
       if(pixleDistance(9, n+p*A_Index, 0x______) < 40)
@@ -160,13 +161,13 @@ draft_playerActive(){
    return false
 }
 
-draft_findPosition(){
+draft_findPosition(){ ;;todo:this method must be more sensetive to its operating environment
    while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         return "position"
+         return "top"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         return "position"
+         return "mid"
       }
       if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
          return "position"
@@ -182,38 +183,38 @@ draft_findPosition(){
    return ""
 }
 
-draft_selectChampion(gamePhase, champions, position :=""){
-   if(gamePhase="intent"){
-      for champ in champions {
-         if(champ["position"] != position OR  champ["position"] != "fill") 
-            continue
-            
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter intent
-         Send %champ["name"]%
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
-         return
-      }
-   }
-   else if(gamePhase="ban"){
-      for ban, value in champions {
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter ban
-         Send %ban%
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click ban button
-         if(!draft_playActive())       ;ban complete
-            return
-      }
-   }
-   else if (gamePhase="championSelection"){
-      for champ in champions {
-         if(champ["position"] != position OR  champ["position"] != "fill")
-            continue
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter champion
-         Send %champ["name"]%
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
-         lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click button
-         if(!draft_playActive())       ;champion select complete
-            return
-      }   
+draft_selectChampionIntent(champions, position){
+   for champion in champions {
+      if(champion["position"] != position OR  champion["position"] != "fill") 
+         continue
+         
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter intent
+      Send %champion["name"]%
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+      return
    }
 }
+
+draft_banChampion(bans){   
+   for ban, value in bans {
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter ban
+      Send %ban%
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click ban button
+      if(!draft_playerActive())                                                 ;;ban complete
+         return
+   }
+}
+draft_selectChampion(champions, position){
+   for champion in champions {
+      if(champion["position"] != position OR  champion["position"] != "fill")
+         continue
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter champion
+      Send %champion["name"]%
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click button
+      if(!draft_playerActive())                                                 ;;champion select complete
+         return
+   }   
+}
+
