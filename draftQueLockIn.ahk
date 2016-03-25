@@ -34,8 +34,6 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
          WinWaitActive ahk_class ApolloRuntimeContentWindow
       }
       Click x,y
-      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible())              ;;could this be better
-         Sleep, 100
    }
    
    return draft_matchMakingQueHandle(champions, bans)
@@ -63,10 +61,9 @@ draft_matchMakingQueHandle(champions, bans){
 }
 
 draft_championSelectionHandle(champions, bans){
-   if(draft_enteringChampionSelect()){
-      position := draft_findPosition()
+   position := draft_findPosition()
+   if(position!="no position")
       draft_selectChampion("intent", champions, position)
-   }
    
    while(draft_numberOfBans()<6){
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
@@ -197,13 +194,13 @@ draft_findPosition(){
       }  
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
    }
-   return "draft_findPosition() Error"
+   return "no position"
 }
 
 draft_selectChampion(gamePhase, champions, position :=""){
    if(gamePhase="intent"){
       for champ in champions {
-         if(champ["position"] != position OR  champ["position"] != "fill")
+         if(champ["position"] != position OR  champ["position"] != "fill") 
             continue
             
          lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter intent
