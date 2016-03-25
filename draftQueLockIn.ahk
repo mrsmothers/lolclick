@@ -61,7 +61,7 @@ draft_matchMakingQueHandle(champions, bans, positions){
 }
 
 draft_championSelectionHandle(champions, bans, positions){
-   position := draft_findPosition() ;;todo:tighten this up
+   position := draft_findPosition() ;;todo:tighten this shit up
    if(position="")
       position := positions[1]
    else{
