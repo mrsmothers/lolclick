@@ -53,7 +53,8 @@ draft_matchMakingQueHandle(champions, bans, positions){
       }
       
       if(draft_acceptMatchButtonAvalible()){
-         Click
+         WinGetPos,,, width, height, A 
+         MouseCLick, Left, width*0.483, height*0.591
          ;todo:wait for other players to accept
          Sleep, 4000
          return draft_championSelectionHandle(champions, bans, positions)    
@@ -93,18 +94,18 @@ draft_championSelectionHandle(champions, bans, positions){
 
 draft_inMatchMaking(){
    WinGetPos,,, width, height, A 
-   return (pixleDistance(,,) < 80)
+   return (pixleDistance(width*0.445, height*0.319, 0x263D4B) < 80)
 }
 
 draft_acceptMatchButtonAvaliable(){
    WinGetPos,,, width, height, A 
-   return (pixleDistance(,,) < 80)
+   return (pixleDistance(width*0.483, height*0.591, 0x0053CA) < 80)
 }
 
 ;;performs clicks nesisary to select the two positions befor Que
 draft_selectPositions(primary, secondary(){
    WinGetPos,,, width, height, A 
-   click
+   MouseClick,,width*0.468, height*0.641
    if(primary="fill"){
       click ;;phill
       return
