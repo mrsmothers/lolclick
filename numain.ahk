@@ -11,7 +11,7 @@ userPassword := ""
  ;;todo:defeat the eula
 ^5::
    if(userPassword="")
-      InputBox,pass, AHK Script, Password for %userName%,,HIDE
+      InputBox,pass, AHK LOL Script, Password for %userName%,,HIDE
    else
       pass := userPassword
       
@@ -47,6 +47,7 @@ login(name, password){
          } 
       }
       WinActivate, ahk_class LOLPATCHER
+      WinGetPos,,, width, height, A 
       while(pixleDistance(.5*width, 0.04*height, 0x1070C0) > 80 ) ;todo:OR imageMatch(<! >)
          sleep, 500
       MouseClick, Left, 0.5*width, 0.04*height, 1
