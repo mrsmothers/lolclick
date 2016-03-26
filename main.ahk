@@ -11,7 +11,7 @@ userPassword := ""
  ;;todo:defeat the eula
 ^5::
    if(userPassword="")
-      InputBox,pass, AHK Script, Password,,HIDE
+      InputBox,pass, AHK Script, Password for %userName%,,HIDE
    else
       pass := userPassword
       
