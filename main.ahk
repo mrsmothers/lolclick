@@ -4,7 +4,7 @@
 
 userName := ""
 userPassword := ""
-
+ ;;todo:defeat the eula
 ^5::
    InputBox, pass, Password,,HIDE
    login(userName, pass)
@@ -42,7 +42,7 @@ login(name, password){
       WinActivate, ahk_class LOLPATCHER
       while(pixleDistance(599, 21, 0x1070C0) > 40 ) ;todo:OR imageMatch(<! >)
          sleep, 500
-      Click 599, 21
+      lolClick(0.46, 0.54, 0.03, 0.06,,200)
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 8500
     }
