@@ -6,9 +6,12 @@ userName := ""
 userPassword := ""
  ;;todo:defeat the eula
 ^5::
-   InputBox, pass, Password,,HIDE
+   if(userPassword="")
+      InputBox,pass, AHK Script, Password,,HIDE
+   else
+      pass := userPassword
+      
    login(userName, pass)
-
 Return
 
 ^t::
