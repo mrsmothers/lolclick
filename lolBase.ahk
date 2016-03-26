@@ -42,7 +42,7 @@ Champion(name, position, summoners1, summoners2){
    return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
 }
 
-lolclick(x1, x2, y1, y2, numClicks:=1, minTime, maxTime:=0){
+lolclick(x1, x2, y1, y2, numClicks:=1, minTime:=0, maxTime:=0){
    WinGetPos,,, width, height, A 
    Random, x, x1*width, x2*width
    Random, y, y1*height, y2*height
@@ -55,8 +55,9 @@ lolclick(x1, x2, y1, y2, numClicks:=1, minTime, maxTime:=0){
    Sleep, slpTime
    IFWinNotActive ahk_class ApolloRuntimeContentWindow
       return false
-   click %numClicks%
+   MouseClick, Left, 0.5*width, 0.04*height, numClicks
 }
+
 
 pixleDistance(x,y, c1){
  ; function by [VxE], return value range = [0, 441.67295593006372]
