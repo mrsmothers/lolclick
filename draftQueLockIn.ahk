@@ -107,45 +107,33 @@ draft_selectPositions(primary, secondary(){
    WinGetPos,,, width, height, A 
    MouseClick,,width*0.468, height*0.641
    if(primary="fill"){
-      click ;;phill
+      MouseClick,,width*0.473, height*0.755
       return
    }
-   if(primary="top"){
-      click
-   }
-   if(primary="mid"){
-      click
-   }
-   if(primary="jung"){
-      click
-   }
-   if(primary="supp"){
-      click
-   }
-   if(primary="bot"){
-      
-      click
-   }
+   if(primary="top")
+      MouseClick,,width*0.396, height*0.639
+   if(primary="mid")
+      MouseClick,,width*0.277, height*0.519
+   if(primary="jung")
+      MouseClick,,width*0.412, height*0.561
+   if(primary="supp")
+      MouseClick,,width*0.528, height*0.547
+   if(primary="bot")
+      MouseClick,,width*0.557, height*0.641
    
-   Click
-   if(secondary="fill"){
-      Click ;;phill
-   }
-   if(secondary="top"){
-      Click
-   }
-   if(secondary="mid"){
-      Click
-   }
-   if(secondary="jung"){
-      Click
-   }
-   if(secondary="supp"){
-      Click
-   }
-   if(secondary="bot"){
-      Click
-   }
+   MouseClick,,width*0.529, height*0.634
+   if(secondary="fill")
+      MouseClick,,width*0.532, height*0.705
+   if(secondary="top")
+      MouseClick,,width*0.458, height*0.642
+   if(secondary="mid")
+      MouseClick,,width*0.527, height*0.538
+   if(secondary="jung")
+      MouseClick,,width*0.466, height*0.592
+   if(secondary="supp")
+      MouseClick,,width*0.609, height*0.564
+   if(secondary="bot")
+      MouseClick,,width*0.616, height*0.648
 }
 ;;iterate throught ban icons and count borders
 draft_numberOfBans(){
