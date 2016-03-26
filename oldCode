@@ -1,0 +1,433 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+global _width := 1024
+global _height := 640
+global _userName     := ""
+global _userPassword := ""  ;use "" for password prompt
+
+
+;;api
+logIn(summonerName, summonerPassword){
+  if(!clientOn()){                                                         ;;start patcher if the Client isn't running
+      if(!WinExist("ahk_class LOLPATCHER")){                               ;;if Patcher hasent been stared
+         Run "C:\Riot Games\League of Legends\lol.launcher.exe", ,max     
+         loop {                                                            ;;watch for error msgs(ahk_class #32770)
+            Sleep, 1500                                                    ;;todo:accept eula
+            if(winExist("ahk_class #32770")){                              ;;Error Message Class         
+	       WinActivate, ahk_class #32770
+               Send {Enter}
+            }
+            else if(winExist("ahk_class LOLPATCHER")){
+                break
+            }
+         }
+      }
+      else 
+         WinActivate, ahk_class LOLPATCHER
+      WinWaitActive, ahk_class LOLPATCHER                                 ;;wait for patcher
+      WinGetPos,,, width, height, A                                     
+      while(!WinExist("ahk_class ApolloRuntimeContentWindow")){
+         if(pxlMatch(0.467*width , 0.032*height, 0x1546BE, 0.1)){         ;;wait for Orange button  
+            Sleep, 100
+            randomClick(0.46*width, 0.54*width, .03*height, 0.06*height)  
+            break
+         }                                                                ;;click Launch Button of Patcher to start the Client
+      }
+   }
+   WinWait, ahk_class ApolloRuntimeContentWindow
+   Sleep, 7000             
+   WinWaitActive,  ahk_class ApolloRuntimeContentWindow                   ;;todo:remove this sleep
+   randomClick(100, 300, 245, 265, 2)                                     ;;click login field of the Client
+   Send, %summonerName%{Tab}%summonerPassword%{Enter}                     ;;send login information
+}
+	;;Script for classic que auto-lock
+classicQueLockIn(gameType, championName := ""){
+   if(!clientOn() OR !playButtonAvalible())                              ;;abort script
+      return    
+
+   clickHomeButton()   
+   MouseMove 415, 370      
+   Sleep, 1000
+   PixelGetColor, _pxlColor, 415, 368                                     ;;remember this pixel's color
+
+   if(gameType="CoOpvsAI_Solo")
+      joinCoOpvsAI_Solo()
+   else if(gameType="BlindPick_Solo")
+      joinBlindPick_Solo()
+   else return                                                            ;;if gameType invalid String abort script
+                                                                          ;;enter matchmaking que
+   MouseMove 415, 370
+   Sleep, 1000                                                            ;;accept match
+      
+   while (clientInFocuse()){ ;;loop in case of dodgers
+      while(!inClassicChampionSelect() AND clientInFocuse()) {
+         if(!pxlMatch(415, 368, _pxlColor, .05)){
+            randomSleep(1000, 2000)
+            Click 415, 368
+            break
+         }
+         Sleep, 1500
+      }
+                                                                          ;;wait for champion select
+      PixelGetColor, _testPxl, 415, 368
+      while( _testPxl != _pxlColor AND clientInFocuse()){
+         sleep, 10
+         if(inClassicChampionSelect()){
+            randomSleep(4000, 5000)
+            break
+         }
+         PixelGetColor, _testPxl, 415, 368
+      }   
+
+      ;;;;no champion to lock in handle;;;;
+      ;;sentinal make sure we havent went back to matchmacking  
+      while((inClassicChampionSelect_lockedIn() OR inClassicChampionSelect()) AND clientInFocuse() AND championName="")
+         Sleep, 1500
+     
+      ;;;;champian lock-in handle;;;;
+                                                                          ;;enter champion name into search bar
+      if(inClassicChampionSelect() AND clientInFocuse() AND championName!=""){
+         click 717, 109, 2
+         send %championName%
+         randomSleep(3000, 4000)
+      }
+                                                                          ;;click champion icon
+      if(inClassicChampionSelect() AND clientInFocuse() AND championName!=""){
+         click 255,167 
+         randomSleep(2000, 3000)
+      }
+                                                                          ;;lock in
+      if(inClassicChampionSelect() AND championName!=""){
+         click 720, 420
+         sleep, 500
+         ;;sentinal make sure we havent went back to matchmacking    
+         while(inClassicChampionSelect_lockedIn() AND clientInFocuse())
+            sleep, 1500       
+      }
+   } 
+}
+
+draftQueLockIn(gameType, primary:="", secondary:="", champion:="", ban:=""){
+   if(!clientOn())                                                          ;if not in the Client abort script
+      return
+
+   if(!draft_inMatchMaking() AND !draft_queButtonAvailible()){                                               ;;todo;fix tracking skip
+      if(playButtonAvalible()){
+         if(gameType= "Normal")                                              ;;enter que of choise
+            joinDraftNormal()
+         else if(gameType="Ranked")
+            joinDraftRanked()
+         else
+            return      
+         Sleep, 7500
+      }
+      if(draft_inTeamArrang()){
+         if(!selectPosition(primary, secondary))
+            MsgBox Position selection failed. Select positions to continue script                                                            ;abort script if positions are invalid
+
+         while(!pxlMatch(478, 570, 0x0259D8, .05))                              ;;wait for Queue up to turn orange
+            Sleep, 200 
+         click 512, 561                                                         ;;Queue up 
+         while(!draft_inMatchMaking() AND !draft_queButtonAvailible())
+           Sleep, 200
+      } 
+   }
+   while (clientInFocuse()){ 
+      if(draft_inMatchMaking() OR draft_queButtonAvailible()){                                                ;;exit script loop if client looses focuse
+         while(clientInFocuse()){                                               ;;wait in match making que for accept button
+            if(draft_queButtonAvailible()){
+               randomSleep(1000, 1500)
+               click 495, 378                                                   ;;accept match todo:add handle for accept match recursion
+               Sleep, 3000
+               break
+            }
+         }
+      }
+      while(!draft_inMatchMaking() AND !draft_queButtonAvailible() AND draft_numberOfBans()<6 AND clientInFocuse()){ ;;wait for ban
+          if(draft_SummonerActive()){                                           ;;select champion to ban 
+             selectChampion(ban, "high")
+             Sleep, 1000
+             break
+          }
+      }
+      while(!draft_inMatchMaking()  AND !draft_queButtonAvailible() AND clientInFocuse()){ ;;wait to select champion
+         if(draft_SummonerActive())
+            selectChampion(champion, "low")
+         Sleep, 500
+      }
+   }
+}
+
+logInUser(){
+   if(clientOn())
+     exitClient()
+   if(_userPassword="")
+      InputBox, _userPassword, Login Information, Password for user %_userName%, HIDE 
+   logIn(_userName, _userPassword)
+}
+
+clientOn(){
+   if(WinExist("ahk_class ApolloRuntimeContentWindow")){
+      WinActivate, ahk_class ApolloRuntimeContentWindow
+      ;WinWaitActive, ahk_class ApolloRuntimeContentWindow
+      return true
+   }
+   else 
+      return false
+}
+
+clientInFocuse(){
+   WinGetTitle, title, a
+   return (title=="PVP.net Client")
+}
+
+exitClient(){
+   WinClose, ahk_class ApolloRuntimeContentWindow
+}
+
+draft_numberOfBans(){   
+   bans:=0     
+   loop, 3{                              
+      if(pxlMatch(151+A_Index*43, 40, 0xA0A0A0, 0.2))
+         bans++
+      if(pxlMatch(706+A_Index*43, 53, 0x507070, 0.2))
+         bans++
+   }
+   return bans
+}
+
+draft_SummonerActive(){
+   loop, 5{
+      if(pxlMatch(9, 64*A_Index+49, 0x0070F0, 0.2))
+         return true
+   }
+   return false
+}
+
+selectChampion(championName, searchBar){
+   if(searchBar="low")
+      MouseMove, 640, 116
+   if(searchBar="high")
+      MouseMove, 640 , 85
+   Sleep, 2000
+   click 2
+   send %championName%
+   Sleep, 2000                                              
+   click 344, 160 ;;click champion icon
+   sleep, 1500
+   click 507, 510
+   sleep, 500
+}
+
+homeButtonAvalible(){
+  return pxlMatch(35, 26, 0x5BA1B6, .2)
+}
+
+playButtonAvalible(){
+  
+ return pxlMatch(470, 22, 0x1440B8, .1)
+}
+
+clickPlayButton(){
+
+   randomClick(454, 566, 16, 49)
+}
+
+clickHomeButton(){
+   randomClick(34, 93, 25, 45)
+}
+
+inClassicChampionSelect(){
+   return (pxlMatch(462, 358, 0x0050CF, 0.01))
+}
+
+inClassicChampionSelect_lockedIn(){
+   return (pxlMatch(294, 357,  0x322112, 0.01))
+}
+
+draft_queButtonAvailible(){
+   return pxlMatch(495, 378, 0x0053CA, .1)
+}
+
+draft_inMatchMaking(){  ;;Needs mor pixles
+   return (pxlMatch(456, 204, 0x263D4B, .03))
+}
+
+draft_inTeamArrang(){
+   return (pxlMatch(503, 29, 0x1D1801, 0.01) AND pxlMatch(455, 238, 0x2B4450, 0.1))
+}
+
+selectPosition(primary, secondary){                           ;;todo:detect if buttons are ready
+   click 479, 410 ;  primary select                            ;;todo:tighten logic  
+   sleep, 1000
+
+   if(primary="fill" OR primary="phill")
+      click 484, 483
+   else if(primary="top" OR primary="island")
+      click 406, 409
+   else if(primary="mid" primary="feed")
+      click 284, 332
+   else if(primary="bot" OR primary="adc" OR primary="noob")
+      click 570, 410
+   else if(primary="jungle" OR primary="jung" OR primary="fungle")
+      click 422, 359
+   else if(primary="support" OR primary="supp" OR primary="soup" OR primary="bra")
+      click 541, 350
+
+   if(primary!="fill" OR primary!="phill"){
+      Sleep, 800
+      click 542, 406                                  ;secondary selection
+      Sleep, 750
+   
+      if(secondary="top" OR secondary="island")
+         click 469, 411
+      else if(secondary="mid" OR secondary="feed")
+         click 540, 344
+      else if(secondary="bot" OR secondary="adc" OR secondary="noob")
+         click 631, 415
+      else if(secondary="jungle" OR secondary="jung" OR secondary="fungle")
+         click 477, 379
+      else if(secondary="support" OR secondary="supp" OR secondary="soup" OR secondary="bra")
+         click 624, 361
+      else if(secondary="fill" OR secondary="phill")
+        click 545, 451
+      else 
+        return false
+  }
+   return true
+}
+
+joinCoOpvsAI_Solo(){
+   randomClick(451, 565, 16, 41)                                          ;Play button    
+   randomSleep(1900, 2300)                                                ;lots of sleep for button latance
+   randomClick(193, 326, 122, 156)                                        ;Co-op Vs. AI button
+   randomSleep(800, 1300)
+   randomClick(513, 618, 113, 141)                                        ;Map:Summner Rift 5v5 button
+   randomSleep(800, 1300)
+   randomClick(675, 760, 158, 172)                                        ;Intermediate button
+   randomSleep(800, 1300)
+   randomClick(543, 646, 554, 582)                                        ;Solo button
+}
+
+joinDraftRanked(){
+   randomClick(0.45*_width, 0.55*_width, 0.03*_height, 0.07*_height)       ;Play button    
+   randomSleep(1900, 2300)                                                 ;lots of sleep for button latance
+   randomClick(0.20*_width, 0.33*_width, 0.12*_height, 0.18*_height)       ;PvP Button
+   randomSleep(600, 1000)
+   randomClick(0.35*_width, 0.40*_width, 0.18*_height, 0.20*_height)       ;Mode:Classic
+   randomSleep(600, 1000)
+   randomClick(0.51*_width, 0.59*_width, 0.18*_height, 0.22*_height)       ;Map:Summoner's Rift
+   randomSleep(600, 1000)
+   randomClick(0.67*_width, 0.71*_width, 0.18*_height, 0.22*_height)       ;Game Type:Ranked Draft
+   randomSleep(600, 1000)
+   randomClick(0.60*_width, 0.72*_width, 0.83*_height, 0.88*_height)       ;Launch
+}
+
+joinDraftNormal(){
+   randomClick(0.45*_width, 0.55*_width, 0.03*_height, 0.07*_height)       ;Play button    
+   randomSleep(1500, 2000)                                                 ;lots of sleep for button latance
+   randomClick(0.20*_width, 0.33*_width, 0.12*_height, 0.18*_height)       ;PvP Button
+   randomSleep(600, 1000)
+   randomClick(0.35*_width, 0.40*_width, 0.18*_height, 0.20*_height)       ;Mode:Classic
+   randomSleep(600, 1000)
+   randomClick(0.51*_width, 0.59*_width, 0.18*_height, 0.22*_height)       ;Map:Summoner's Rift
+   randomSleep(600, 1000)
+   randomClick(0.67*_width, 0.71*_width, 0.24*_height, 0.27*_height)       ;Game Type:Normal Draft
+   randomSleep(600, 1000)
+   randomClick(0.60*_width, 0.72*_width, 0.83*_height, 0.88*_height)       ;Launch
+}
+
+joinBlindPick_Solo(){
+   randomClick(0.45*_width, 0.55*_width, 0.03*_height, 0.07*_height)      ;Play button    
+   randomSleep(1900, 2300)                                                ;lots of sleep for button latance
+   randomClick(0.20*_width, 0.33*_width, 0.12*_height, 0.18*_height)      ;PvP Button
+   randomSleep(800, 1300)
+   randomClick(0.35*_width, 0.40*_width, 0.18*_height, 0.20*_height)      ;Mode:Classic
+   randomSleep(800, 1300)
+   randomClick(0.51*_width, 0.59*_width, 0.18*_height, 0.22*_height)      ;Map:Summoner's Rift
+   randomSleep(800, 1300)
+   randomClick(0.67*_width, 0.71*_width, 0.28*_height, 0.31*_height)      ;Game Type:Normal Blind Pick
+   randomSleep(800, 1300)
+   randomClick(0.53*_width, 0.63*_width, 0.86*_height, 0.91*_height)      ;Solo Que
+}
+
+joinBlindPick_Party(){
+   randomClick(0.45*_width, 0.55*_width, 0.03*_height, 0.07*_height)      ;Play button    
+   randomSleep(1900, 2300)                                                ;lots of sleep for button latance
+   randomClick(0.20*_width, 0.33*_width, 0.12*_height, 0.18*_height)      ;PvP Button
+   randomSleep(800, 1300)
+   randomClick(0.35*_width, 0.40*_width, 0.18*_height, 0.20*_height)      ;Mode:Classic
+   randomSleep(800, 1300)
+   randomClick(0.51*_width, 0.59*_width, 0.18*_height, 0.22*_height)      ;Map:Summoner's Rift
+   randomSleep(800, 1300)
+   randomClick(0.67*_width, 0.71*_width, 0.28*_height, 0.31*_height)      ;Game Type:Normal Blind Pick
+   randomSleep(800, 1300)
+   randomClick(0.65*_width, 0.79*_width, 0.86*_height, 0.91*_height)      ;Party Que
+}
+
+theReadyBotTMColonAKANeverMissABanOrLockIn(){
+   click 
+   loop , 33{      ;;1000 max run time Seconds Good AFK script auto ready
+   MouseMove 410, 380
+   Sleep, 350
+   Click
+   MouseMove 500, 380
+   Sleep, 3000
+   Click 510,500    ;;505_515,505_515 button=Lock in 0000 reference point all Classic Lock in
+   Sleep, 350
+   }
+}
+randomSleep(_min, _max){
+   Random _randie, _min, _max
+   Sleep, _randie
+}
+
+randomClick(_topLeftX, _bottomRightX, _topLeftY, _bottomRightY, _numClicks:=1){
+   Random _randX, _topLeftX, _bottomRightX
+   Random _randY, _topLeftY, _bottomRightY
+   MouseClick, Left, _randX, _randY, _numClicks
+}
+
+pxlMatch(x, y, color, threshhold){
+  ;function by [VxE], sqrt function return value = [0, 441.67295593006372]
+   PixelGetColor, c1, x, y
+   r1 := c1 >> 16
+   g1 := c1 >> 8 & 255
+   b1 := c1 & 255
+   r2 := color >> 16
+   g2 := color >> 8 & 255
+   b2 := color & 255 
+   return (Sqrt((r1-r2)**2 + (g1-g2)**2 + (b1-b2)**2 )/441.68 < threshhold)
+}
+
+^g::
+  InputBox, champion, Enter Champion Name
+  if(!clientOn()){
+     logIn("mr5mother5", "c0d3m8n8i11")
+     Sleep, 23000
+  }
+  else 
+    Sleep, 200
+  classicQueLockIn("CoOpvsAI_Solo", champion)  ;classicQueLockIn("BlindPick_Solo")
+Return
+
+
+
+^e::
+  exitClient()
+Return
+
+^q::
+   exitApp
+Return
+
+^t::
+   draftQueLockIn("Normal","noob","bra","kog","mundo")
+Return
+
+^l::
+   theReadyBotTMColonAKANeverMissABanOrLockIn()
+Return
