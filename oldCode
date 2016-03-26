@@ -406,7 +406,7 @@ pxlMatch(x, y, color, threshhold){
 ^g::
   InputBox, champion, Enter Champion Name
   if(!clientOn()){
-     logIn("mr5mother5", "c0d3m8n8i11")
+     logIn(,)
      Sleep, 23000
   }
   else 
