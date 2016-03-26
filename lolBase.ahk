@@ -42,9 +42,10 @@ Champion(name, position, summoners1, summoners2){
    return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
 }
 
-lolclick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0){
-   Random, x, x1, x2
-   Random, y, y1, y2
+lolclick(x1, x2, y1, y2, numClicks:=1, minTime, maxTime:=0){
+   WinGetPos,,, width, height, A 
+   Random, x, x1*width, x2*width
+   Random, y, y1*height, y2*height
    MouseMove x, y   
    
    if(maxTime=0)
