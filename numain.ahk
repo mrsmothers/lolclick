@@ -32,7 +32,7 @@ Return
    draftQueLockIn("Normal", positions, champions, bans, false)
 Return
 
-
+ ;;include eule detection
 login(name, password){
    if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
