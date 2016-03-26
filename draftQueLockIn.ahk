@@ -152,9 +152,9 @@ draft_numberOfBans(){
    bans := 0
    
    loop, 3{
-      if(pixleDistance(width*(0.042*A_Index+.1475), n1+*A_Index, 0x______) < 40)
+      if(pixleDistance(width*(0.042*A_Index + 0.1475), height*0.0625, 0xA0A0A0) < 40)
          bans++
-      if(pixleDistance(x2, n2+p*A_Index, 0x______) < 40)
+      if(pixleDistance(width*(0.042*A_Index + 0.6895), height*0.0828, 0x507070) < 40)
          bans++
    }
    
@@ -164,7 +164,7 @@ draft_numberOfBans(){
 draft_playerActive(){
    WinGetPos,,, width, height, A 
    loop, 5 {
-      if(pixleDistance(9, n+p*A_Index, 0x______) < 40)
+      if(pixleDistance(width*0.008 ,height*(0.077 + 0.1*A_Index), 0x0070F0) < 40)
          return true
    }
    return false
