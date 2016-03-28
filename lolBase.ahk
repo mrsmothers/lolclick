@@ -15,19 +15,23 @@ clientInFocuse(){
 }
 
 clickHomeButton(){
- ;prototype
+   WinGetPos,,,width, height, A
+   MouseClick,,0.034*width, 0.041*height
 }
 
 clickPlayButton(){
- ;prototype
+  WinGetPos,,,width, height, A
+  MouseClick,,.5*width,0.05*height
 }
 
 homeButtonAvalible(){
- ;prtotype
+   WinGetPos,,,width, height, A
+   return(pixleDistance(0.0342*width, 0.0406*height, 0x5BA1B6) < 80)
 }
 
 playButtonAvalible(){
- ;prototype
+   WinGetPos,,,width,height, A
+   return(pixleDistance(0.459*width, 0.0344*height, 0x1440B8) < 80)
 }
 
 startDraftNormalQue(){
