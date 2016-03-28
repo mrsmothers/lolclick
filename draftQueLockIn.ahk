@@ -187,21 +187,27 @@ draft_selectChampionIntent(champions, position){
    for champion in champions {
       if(champion["position"] != position OR  champion["position"] != "fill") 
          continue
-         
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter intent
+      if(!lolClick(0.621, 0.678, 0.166, 0.193, 2, 300, 500))             ;;click search bar and enter intent
+         return
+      if(!clientInFocuse())
+         return
       Send %champion["name"]%
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
+      lolClick(0.307, 0.358, 0.231, 0.194, 1, 500)             ;;click champion icon
       return
    }
 }
 
 draft_banChampion(bans){   
-   WinGetPos,,, width, height, A 
    for ban, value in bans {
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter ban
+      if(!lolClick(0.663, 0.674, 0.121, 0.149, 2, 300, 500))                      ;;click search bar and enter ban
+         return
+      if(!clientInFocuse())
+         return
       Send %ban%
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click ban button
+      if(!lolClick(0.310, 0.350, 0.190, 0.268, 1, 350, 450))                      ;;click champion icon
+         return
+      if(!lolClick(0.433, 0.568, 0.743, 0.785, 1, 1000))                       ;;click ban button
+         return
       if(!draft_playerActive())                                                 ;;ban complete
          return
    }
@@ -210,10 +216,13 @@ draft_selectChampion(champions, position){
    for champion in champions {
       if(champion["position"] != position OR  champion["position"] != "fill")
          continue
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click search bar and enter champion
+      if(!lolClick(0.621, 0.678, 0.166, 0.193, 2, 300, 500))                      ;;click search bar and enter champion
+         return
       Send %champion["name"]%
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click champion icon
-      lolClick(x1, y1, x2, y2, numClicks:=1, minTime, maxTime:=0)             ;;click button
+     if(!lolClick(0.307, 0.358, 0.231, 0.194, 1, 500))                         ;;click champion icon
+         return
+      if(!lolClick(0.433, 0.568, 0.743, 0.785, 1, 1000))                           ;;click button
+         return
       if(!draft_playerActive())                                                 ;;champion select complete
          return
    }   
