@@ -55,7 +55,7 @@ lolclick(x1, x2, y1, y2, numClicks:=1, minTime:=0, maxTime:=0){
    Sleep, slpTime
    IFWinNotActive ahk_class ApolloRuntimeContentWindow
       return false
-   MouseClick, Left, 0.5*width, 0.04*height, numClicks
+   MouseClick,, x, y, numClicks
 }
 
 
