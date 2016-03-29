@@ -12,52 +12,47 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!homeButtonAvalible())
       return draft_championSelectionHandle(champions, bans, positions)
       
-   if(playButtonAvalible()){
-      if(gameType="Ranked")
-         startDraftRanked()
-      else if(gameType="Normal")
-         startDraftNormal()
-      else 
-         return
+   ;if(playButtonAvalible()){
+   ;   if(gameType="Ranked")
+   ;      startDraftRanked()
+   ;   else if(gameType="Normal")
+   ;      startDraftNormal()
+   ;   else 
+   ;      return
 
-      draft_selectPositions(position[1], position[2])
-   }
-   else 
-      waitForMatchMaking := true
+   ;   draft_selectPositions(position[1], position[2])
+   ;}
+   ;else 
+   ;   waitForMatchMaking := true
          
-   if(waitForMatchMaking){
+   ;if(waitForMatchMaking){
       while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible()){
          Sleep, 500
          WinWaitActive ahk_class ApolloRuntimeContentWindow
       }
-   }
-   else{
-      WinGetPos,,, width, height, A 
-      while(pxlDistance(0.467*width, 0.891*height, 0x0060E0)< 40 ){                                     ;;Queue Up Button
-         Sleep, 500
-         WinWaitActive ahk_class ApolloRuntimeContentWindow
-      }
-      MouseClick, Left, 0.467*width, 0.891*height
-   }
+   ;}
+   ;else{
+   ;   WinGetPos,,, width, height, A 
+   ;   while(pxlDistance(0.467*width, 0.891*height, 0x0060E0)< 40 ){                                     ;;Queue Up Button
+   ;      Sleep, 500
+   ;      WinWaitActive ahk_class ApolloRuntimeContentWindow
+   ;   }
+   ;   MouseClick, Left, 0.467*width, 0.891*height
+   ;}
    
    return draft_matchMakingQueHandle(champions, bans, positions)
 }
 
 draft_matchMakingQueHandle(champions, bans, positions){
    loop {
-      if(draft_inMatchMaking()){
-         while(!draft_acceptMatchButtonAvalible()){
-            Sleep, 2000
-            WinWaitAcive ahk_class ApolloRuntimeContentWindow 
-         }
-      }
-      
-      if(draft_acceptMatchButtonAvalible()){
-         WinGetPos,,, width, height, A 
-         MouseCLick, Left, width*0.483, height*0.591
-         ;todo:wait for other players to accept
-         Sleep, 4000
-         return draft_championSelectionHandle(champions, bans, positions)    
+       if(draft_acceptMatchButtonAvalible()){
+          WinGetPos,,, width, height, A 
+          MouseCLick, Left, width*0.483, height*0.591
+          ;todo:wait for other players to accept
+          while((pixleDistance(x,y,0x______) < 40) AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())
+             Sleep, 500
+          if(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())   
+             return draft_championSelectionHandle(champions, bans, positions)    
       }
    }
 }
@@ -106,6 +101,8 @@ draft_acceptMatchButtonAvaliable(){
 draft_selectPositions(primary, secondary(){
    WinGetPos,,, width, height, A 
    MouseClick,,width*0.468, height*0.641
+   Sleep, 700
+   
    if(primary="fill"){
       MouseClick,,width*0.473, height*0.755
       return
@@ -120,8 +117,11 @@ draft_selectPositions(primary, secondary(){
       MouseClick,,width*0.528, height*0.547
    if(primary="bot")
       MouseClick,,width*0.557, height*0.641
-   
+      
+   Sleep, 700
    MouseClick,,width*0.529, height*0.634
+   Sleep, 700
+   
    if(secondary="fill")
       MouseClick,,width*0.532, height*0.705
    if(secondary="top")
@@ -134,6 +134,8 @@ draft_selectPositions(primary, secondary(){
       MouseClick,,width*0.609, height*0.564
    if(secondary="bot")
       MouseClick,,width*0.616, height*0.648
+      
+   Sleep, 700
 }
 ;;iterate throught ban icons and count borders
 draft_numberOfBans(){
@@ -162,21 +164,16 @@ draft_playerActive(){
 draft_findPosition(){ ;;todo:this method must be more sensetive to its operating environment
    while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
       WinGetPos,,, width, height, A 
-      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "top"
-      }
-      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "mid"
-      }
-      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         return "position"
-      }
-      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         return "position"
-      }
-      if(pixleDistance(x, y, 0x_orange)<50){ ;todo complete map and discover proper color of orange
-         return "position"
-      }  
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "jung"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "supp"
+      if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
+         return "bot"
       WinWaitAcive ahk_class ApolloRuntimeContentWindow 
    }
    return ""
@@ -212,6 +209,7 @@ draft_banChampion(bans){
          return
    }
 }
+
 draft_selectChampion(champions, position){
    for champion in champions {
       if(champion["position"] != position OR  champion["position"] != "fill")
