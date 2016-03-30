@@ -179,6 +179,7 @@ draft_findPosition(){ ;;todo:this method must be more sensetive to its operating
    return ""
 }
 
+
 draft_selectChampionIntent(champions, position){
    WinGetPos,,, width, height, A 
    for champion in champions {
@@ -188,7 +189,8 @@ draft_selectChampionIntent(champions, position){
          return
       if(!clientInFocuse())
          return
-      Send, {champion.name}
+      name := champion.name
+      Send, %name%
       lolClick(0.307, 0.358, 0.231, 0.194, 1, 500)             ;;click champion icon
       return
    }
@@ -216,7 +218,8 @@ draft_selectChampion(champions, position){
          continue
       if(!lolClick(0.621, 0.678, 0.166, 0.193, 2, 300, 500))                      ;;click search bar and enter champion
          return
-      Send, {champion.name}
+     name := champion.name
+     Send, %name%
      if(!lolClick(0.307, 0.358, 0.231, 0.194, 1, 500))                         ;;click champion icon
          return
       if(!lolClick(0.433, 0.568, 0.743, 0.785, 1, 1000))                           ;;click button
