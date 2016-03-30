@@ -56,5 +56,6 @@ login(name, password){
     }
   WinActivate, ahk_class ApolloRuntimeContentWindow
   ;click x,y
-  Send, %name%{TAB}%password%{ENTER}
+  if(name!="")
+     Send, %name%{TAB}%password%{ENTER}
 }
