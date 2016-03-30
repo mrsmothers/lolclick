@@ -4,7 +4,7 @@ clientOn(){
      return true
   }
   else
-     false
+     return false
 }
 
 clientInFocuse(){
@@ -26,12 +26,12 @@ clickPlayButton(){
 
 homeButtonAvalible(){
    WinGetPos,,,width, height, A
-   return(pixleDistance(0.0342*width, 0.0406*height, 0x5BA1B6) < 80)
+   return (pixleDistance(0.0342*width, 0.0406*height, 0x5BA1B6) < 80)
 }
 
 playButtonAvalible(){
    WinGetPos,,,width,height, A
-   return(pixleDistance(0.459*width, 0.0344*height, 0x1440B8) < 80)
+   return (pixleDistance(0.459*width, 0.0344*height, 0x1440B8) < 80)
 }
 
 startDraftNormalQue(){
