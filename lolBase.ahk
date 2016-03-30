@@ -1,5 +1,5 @@
 clientOn(){
-  if WinExist ahk_class ApolloRuntimeContentWindow {
+  if WinExist(" ahk_class ApolloRuntimeContentWindow") {
      WinActivate ahk_class ApolloRuntimeContentWindow
      return true
   }
