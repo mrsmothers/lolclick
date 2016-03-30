@@ -7,7 +7,7 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    if(!clientOn())
       return
       
-   if(draft_inMatchMaking() OR draft_acceptButtonAvalible())
+   if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
       return draft_matchMakingQueHandle(champions, bans, positions)
    if(!homeButtonAvalible())
       return draft_championSelectionHandle(champions, bans, positions)
@@ -26,7 +26,7 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    ;   waitForMatchMaking := true
          
    ;if(waitForMatchMaking){
-      while(!draft_inMatchMaking() AND !draft_acceptButtonAvalible()){
+      while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){
          Sleep, 500
          WinWaitActive ahk_class ApolloRuntimeContentWindow
       }
@@ -45,13 +45,13 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
 
 draft_matchMakingQueHandle(champions, bans, positions){
    loop {
-       if(draft_acceptMatchButtonAvalible()){
+       if(draft_acceptMatchButtonAvailable()){
           WinGetPos,,, width, height, A 
           MouseCLick, Left, width*0.483, height*0.591
           ;todo:wait for other players to accept
-          while((pixleDistance(x,y,0x______) < 40) AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())
+          while((pixleDistance(x,y,0x______) < 40) AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable())
              Sleep, 500
-          if(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible())   
+          if(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable())   
              return draft_championSelectionHandle(champions, bans, positions)    
       }
    }
@@ -67,8 +67,8 @@ draft_championSelectionHandle(champions, bans, positions){
    }
    
    while(draft_numberOfBans()<6){
-      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
-      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
+      WinWaitActive ahk_class ApolloRuntimeContentWindow 
+      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
          return draft_matchMakingQueHandle(champions, bans, positions)
       if(draft_playerActive())
          draft_banChampion(bans)
@@ -77,8 +77,8 @@ draft_championSelectionHandle(champions, bans, positions){
    }
    
    while(TRUE){
-      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
-      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvalible())
+      WinWaitActive ahk_class ApolloRuntimeContentWindow 
+      if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
          return draft_matchMakingQueHandle(champions, bans, positions)   
       if(draft_playerActive())
          draft_selectChampion(champions, position)
@@ -92,13 +92,13 @@ draft_inMatchMaking(){
    return (pixleDistance(width*0.445, height*0.319, 0x263D4B) < 80)
 }
 
-draft_acceptMatchButtonAvaliable(){
+draft_acceptMatchButtonAvailable(){
    WinGetPos,,, width, height, A 
    return (pixleDistance(width*0.483, height*0.591, 0x0053CA) < 80)
 }
 
 ;;performs clicks nesisary to select the two positions befor Que
-draft_selectPositions(primary, secondary(){
+draft_selectPositions(primary, secondary){
    WinGetPos,,, width, height, A 
    MouseClick,,width*0.468, height*0.641
    Sleep, 700
@@ -162,7 +162,7 @@ draft_playerActive(){
 }
 
 draft_findPosition(){ ;;todo:this method must be more sensetive to its operating environment
-   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvalible() AND !draft_playerActive()){
+   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable() AND !draft_playerActive()){
       WinGetPos,,, width, height, A 
       if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "top"
@@ -174,7 +174,7 @@ draft_findPosition(){ ;;todo:this method must be more sensetive to its operating
          return "supp"
       if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "bot"
-      WinWaitAcive ahk_class ApolloRuntimeContentWindow 
+      WinWaitActive ahk_class ApolloRuntimeContentWindow 
    }
    return ""
 }
@@ -188,7 +188,7 @@ draft_selectChampionIntent(champions, position){
          return
       if(!clientInFocuse())
          return
-      Send %champion["name"]%
+      Send, {champion.name}
       lolClick(0.307, 0.358, 0.231, 0.194, 1, 500)             ;;click champion icon
       return
    }
@@ -200,7 +200,7 @@ draft_banChampion(bans){
          return
       if(!clientInFocuse())
          return
-      Send %ban%
+      Send, %ban%
       if(!lolClick(0.310, 0.350, 0.190, 0.268, 1, 350, 450))                      ;;click champion icon
          return
       if(!lolClick(0.433, 0.568, 0.743, 0.785, 1, 1000))                       ;;click ban button
@@ -216,7 +216,7 @@ draft_selectChampion(champions, position){
          continue
       if(!lolClick(0.621, 0.678, 0.166, 0.193, 2, 300, 500))                      ;;click search bar and enter champion
          return
-      Send %champion["name"]%
+      Send, {champion.name}
      if(!lolClick(0.307, 0.358, 0.231, 0.194, 1, 500))                         ;;click champion icon
          return
       if(!lolClick(0.433, 0.568, 0.743, 0.785, 1, 1000))                           ;;click button
