@@ -45,12 +45,18 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
 
 draft_matchMakingQueHandle(champions, bans, positions){
    loop {
+       WinWaitActive ahk_class ApolloRuntimeContentWindow
        if(draft_acceptMatchButtonAvailable()){
+          Sleep, 2000
           WinGetPos,,, width, height, A 
-          MouseCLick, Left, width*0.483, height*0.591
+          if(draft_acceptMatchButtonAvailable())
+             MouseCLick, Left, width*0.483, height*0.591
           ;todo:wait for other players to accept
-          while((pixleDistance(x,y,0x______) < 40) AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable())
-             Sleep, 500
+          ;while((pixleDistance(x,y,0x______) < 40) AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){
+          ;   WinWaitActive ahk_class ApolloRuntimeContentWindow
+          ;   Sleep, 500
+          ;}
+          Sleep, 4000
           if(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable())   
              return draft_championSelectionHandle(champions, bans, positions)    
       }
