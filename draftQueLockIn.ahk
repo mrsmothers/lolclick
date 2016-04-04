@@ -3,15 +3,8 @@
  ;;todo:create a champion configuer
  ;;todo:detemin when the Que is finished
  ;;todo:install intelgent clickers to back up player enlu of auto-clickers
-draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
-   if(!clientOn())
-      return
-      
-   if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
-      return draft_matchMakingQueHandle(champions, bans, positions)
-   if(!homeButtonAvalible())
-      return draft_championSelectionHandle(champions, bans, positions)
-      
+ 
+draftQueInit(){
    ;if(playButtonAvalible()){
    ;   if(gameType="Ranked")
    ;      startDraftRanked()
@@ -25,11 +18,7 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    ;else 
    ;   waitForMatchMaking := true
          
-   ;if(waitForMatchMaking){
-      while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){
-         Sleep, 500
-         WinWaitActive ahk_class ApolloRuntimeContentWindow
-      }
+   ;if(waitForMatchMaking){}
    ;}
    ;else{
    ;   WinGetPos,,, width, height, A 
@@ -38,7 +27,23 @@ draftQueLockIn(gameType, positions, champions, bans, waitForMatchMaking:=0){
    ;      WinWaitActive ahk_class ApolloRuntimeContentWindow
    ;   }
    ;   MouseClick, Left, 0.467*width, 0.891*height
-   ;}
+   ;}   
+}
+draftQueWalkThrough(gameType, positions, champions, bans, waitForMatchMaking:=0){
+   if(!clientOn())
+      return
+      
+   if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
+      return draft_matchMakingQueHandle(champions, bans, positions)
+   if(!homeButtonAvalible())
+      return draft_championSelectionHandle(champions, bans, positions)
+      
+
+   while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){ ;;add mor pixle test for match making detettion
+      Sleep, 1000
+      WinWaitActive ahk_class ApolloRuntimeContentWindow
+   }
+
    
    return draft_matchMakingQueHandle(champions, bans, positions)
 }
