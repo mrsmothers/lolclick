@@ -170,7 +170,8 @@ draft_playerActive(){
 }
 
 draft_findPosition(){ ;;todo:this method must be more sensetive to its operating environment
-   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable() AND !draft_playerActive()){
+   WinGetPos,,, width, height
+   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable() AND !draft_playerActive() AND pixleDistance(width*0.299, height*0.063, 0x302010) > 40){
       WinGetPos,,, width, height, A 
       if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "top"
