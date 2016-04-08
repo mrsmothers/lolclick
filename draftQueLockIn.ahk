@@ -71,12 +71,12 @@ draft_championSelectionHandle(positions, champions, bans){
 
 draft_inMatchMaking(){
    WinGetPos,,, width, height, A 
-   return (pixleDistance(width*0.445, height*0.319, 0x263D4B) < 80)
+   return (pixleDistance(width*0.445, height*0.319, 0x204050) < 80)
 }
 
 draft_acceptMatchButtonAvailable(){
    WinGetPos,,, width, height, A 
-   return (pixleDistance(width*0.483, height*0.591, 0x0053CA) < 80)
+   return (pixleDistance(width*0.483, height*0.591, 0x0050D0) < 80)
 }
 
 ;;iterate throught ban icons and count borders
@@ -105,7 +105,9 @@ draft_playerActive(){
 
 draft_findPosition(){ ;;todo:this method must be more sensetive to its operating environment
    WinGetPos,,, width, height
-   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable() AND !draft_playerActive() AND pixleDistance(width*0.299, height*0.063, 0x302010) > 40){
+   while(draft_numberOfBans()=0 AND !draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable() 
+            AND !draft_playerActive() AND pixleDistance(width*0.299, height*0.063, 0x302010) > 40){
+            
       WinGetPos,,, width, height, A 
       if(pixleDistance(x, y, 0x_orange)<50) ;todo complete map and discover proper color of orange
          return "top"
