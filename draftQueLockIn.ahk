@@ -4,22 +4,22 @@
  ;;todo:detemin when the Que is finished
  ;;todo:install intelgent clickers to back up player enlu of auto-clickers
  
-draftQueWalkThrough(gameType, positions, champions, bans, waitForMatchMaking:=0){
+draftQueWalkThrough(positions, champions, bans){
    if(!clientOn())
       return
       
    if(!homeButtonAvalible())
-      return draft_championSelectionHandle(champions, bans, positions)
+      return draft_championSelectionHandle(positions, champions, bans)
 
-   while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){ ;;add mor pixle test for match making detettion
+   while(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable()){ ;;todo:add mor pixle test for match making detettion
       Sleep, 1000
       WinWaitActive ahk_class ApolloRuntimeContentWindow
    }
    
-   return draft_matchMakingQueHandle(champions, bans, positions)
+   return draft_matchMakingQueHandle(positions, champions, bans)
 }
 
-draft_matchMakingQueHandle(champions, bans, positions){
+draft_matchMakingQueHandle(positions, champions, bans){
    loop {
        WinWaitActive ahk_class ApolloRuntimeContentWindow
        if(draft_acceptMatchButtonAvailable()){
@@ -34,12 +34,12 @@ draft_matchMakingQueHandle(champions, bans, positions){
           ;}
           Sleep, 4000
           if(!draft_inMatchMaking() AND !draft_acceptMatchButtonAvailable())   
-             return draft_championSelectionHandle(champions, bans, positions)    
+             return draft_championSelectionHandle(positions, champions, bans)    
       }
    }
 }
 
-draft_championSelectionHandle(champions, bans, positions){
+draft_championSelectionHandle(positions, champions, bans){
    position := draft_findPosition() ;;todo:tighten this shit up
    if(position="")
       position := positions[1]
@@ -51,7 +51,7 @@ draft_championSelectionHandle(champions, bans, positions){
    while(draft_numberOfBans()<6){
       WinWaitActive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
-         return draft_matchMakingQueHandle(champions, bans, positions)
+         return draft_matchMakingQueHandle(positions, champions, bans)
       if(draft_playerActive())
          draft_banChampion(bans)
       
@@ -61,7 +61,7 @@ draft_championSelectionHandle(champions, bans, positions){
    while(TRUE){
       WinWaitActive ahk_class ApolloRuntimeContentWindow 
       if(draft_inMatchMaking() OR draft_acceptMatchButtonAvailable())
-         return draft_matchMakingQueHandle(champions, bans, positions)   
+         return draft_matchMakingQueHandle(positions, champions, bans)   
       if(draft_playerActive())
          draft_selectChampion(champions, position)
       ;;todo: determen when game starts loading   
