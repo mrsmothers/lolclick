@@ -29,7 +29,7 @@ Return
    champions := [kog, jinx, champ2, leona, phill]
    bans      := ["mundo", "yas", "blitz"]
    
-   draftQueLockIn("Normal", positions, champions, bans, false)
+   draftQueWalkThrough(champions, bans, positions)
 Return
 
  ;;include eule detection
