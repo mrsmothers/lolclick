@@ -48,9 +48,16 @@ login(name, password){
       }
       WinActivate, ahk_class LOLPATCHER
       WinGetPos,,, width, height, A 
-      while(pixleDistance(.5*width, 0.04*height, 0x1070C0) > 80 ) ;todo:OR imageMatch(<! >)
+      while(pixleDistance(.5*width, 0.04*height, 0x1070C0) > 80 ) ;Click Play Button
          sleep, 1000
       MouseClick, Left, 0.5*width, 0.04*height, 1
+      ;;eula blaster
+      ;Sleep, 1000
+      ;if(pixleDistance(x*width, y*height, 0x______) < 40){
+      ;   MouseClick,,x*width, y*height
+      ;   Sleep, 500
+      ;   MouseClick,,x*width, y*height
+      ;}
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 7000
     }
