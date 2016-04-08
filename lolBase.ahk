@@ -54,26 +54,6 @@ startDraftQue(gameType, position){
    MouseClick, Left, 0.467*width, 0.891*height
 }
 
-Champion(name, position, summoners1, summoners2){
-   return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
-}
-
-lolclick(x1, x2, y1, y2, numClicks:=1, minTime:=0, maxTime:=0){
-   WinGetPos,,, width, height, A 
-   Random, x, x1*width, x2*width
-   Random, y, y1*height, y2*height
-   MouseMove x, y   
-   
-   if(maxTime=0)
-      slpTime:=minTime
-   else
-      Random, slpTime, minTime, maxTime         
-   Sleep, slpTime
-   IFWinNotActive ahk_class ApolloRuntimeContentWindow
-      return false
-   MouseClick,, x, y, numClicks
-}
-
 ;;performs clicks nesisary to select the two positions befor Que
 draft_selectPositions(primary, secondary){
    WinGetPos,,, width, height, A 
@@ -113,6 +93,26 @@ draft_selectPositions(primary, secondary){
       MouseClick,,width*0.616, height*0.648
       
    Sleep, 700
+}
+
+Champion(name, position, summoners1, summoners2){
+   return { "name":name, "position":position, "summoners1":summoners1, "summoners2":summoners2}
+}
+
+lolclick(x1, x2, y1, y2, numClicks:=1, minTime:=0, maxTime:=0){
+   WinGetPos,,, width, height, A 
+   Random, x, x1*width, x2*width
+   Random, y, y1*height, y2*height
+   MouseMove x, y   
+   
+   if(maxTime=0)
+      slpTime:=minTime
+   else
+      Random, slpTime, minTime, maxTime         
+   Sleep, slpTime
+   IFWinNotActive ahk_class ApolloRuntimeContentWindow
+      return false
+   MouseClick,, x, y, numClicks
 }
 
 pixleDistance(x,y, c1){
