@@ -56,6 +56,7 @@ login(name:="", password:=""){
       ;   WinGetClass, class, A
       ;   if(pixleDistance(x*width, y*height, 0x______) < 40 AND class="LOLPATCHER")
       ;      MouseClick,,x*width, y*height
+      ;}
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 7000
     }
