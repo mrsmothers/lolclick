@@ -10,7 +10,7 @@ userName := ""
 userPassword := ""
  ;;todo:defeat the eula
 ^5::
-   if(userPassword="")
+   if(userName!="" AND userPassword="")
       InputBox,pass, AHK LOL Script, Password for %userName%,,HIDE
    else
       pass := userPassword
@@ -33,7 +33,7 @@ Return
 Return
 
  ;;include eule detection
-login(name, password){
+login(name, password:=""){
    if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
          Run, "C:\Riot Games\League of Legends\lol.launcher.exe"
@@ -41,7 +41,7 @@ login(name, password){
             if(winExist("ahk_class #32770")){
                WinActivate, ahk_class #32770
                Send, {ENTER}
-               Sleep, 100 
+               Sleep, 200 
                break
             }
          } 
@@ -52,12 +52,10 @@ login(name, password){
          sleep, 1000
       MouseClick, Left, 0.5*width, 0.04*height, 1
       ;;eula blaster
-      ;Sleep, 1000
-      ;if(pixleDistance(x*width, y*height, 0x______) < 40){
-      ;   MouseClick,,x*width, y*height
-      ;   Sleep, 500
-      ;   MouseClick,,x*width, y*height
-      ;}
+      ;while(WinExist("ahk_class LOLPATCHER")){
+      ;   WinGetClass, class, A
+      ;   if(pixleDistance(x*width, y*height, 0x______) < 40 AND class="LOLPATCHER")
+      ;      MouseClick,,x*width, y*height
       WinWaitActive, ahk_class ApolloRuntimeContentWindow
       Sleep, 7000
     }
