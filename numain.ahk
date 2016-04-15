@@ -33,7 +33,7 @@ Return
 Return
 
  ;;include eule detection
-login(name, password:=""){
+login(name:="", password:=""){
    if(!WinExist("ahk_class ApolloRuntimeContentWindow")){
       if(!WinExist("ahk_class LOLPATCHER")){
          Run, "C:\Riot Games\League of Legends\lol.launcher.exe"
